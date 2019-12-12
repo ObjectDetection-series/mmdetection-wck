@@ -46,7 +46,7 @@ class IoUBalancedNegSampler(RandomSampler):
         iou_interval = (max_iou - self.floor_thr) / self.num_bins
         per_num_expected = int(num_expected / self.num_bins)
 
-        sampled_inds = []
+        sampled_inds = []       # list of sampled indices
         for i in range(self.num_bins):
             start_iou = self.floor_thr + i * iou_interval
             end_iou = self.floor_thr + (i + 1) * iou_interval

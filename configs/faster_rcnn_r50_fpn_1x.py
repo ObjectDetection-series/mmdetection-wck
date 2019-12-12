@@ -44,6 +44,7 @@ model = dict(
         loss_cls=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
         loss_bbox=dict(type='SmoothL1Loss', beta=1.0, loss_weight=1.0)))
+
 # model training and testing settings
 train_cfg = dict(
     rpn=dict(
@@ -97,6 +98,7 @@ test_cfg = dict(
     # soft-nms is also supported for rcnn testing
     # e.g., nms=dict(type='soft_nms', iou_thr=0.5, min_score=0.05)
 )
+
 # dataset settings
 dataset_type = 'CocoDataset'
 data_root = 'data/coco/'
@@ -145,9 +147,11 @@ data = dict(
         ann_file=data_root + 'annotations/instances_val2017.json',
         img_prefix=data_root + 'val2017/',
         pipeline=test_pipeline))
+
 # optimizer
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
+
 # learning policy
 lr_config = dict(
     policy='step',
@@ -156,6 +160,7 @@ lr_config = dict(
     warmup_ratio=1.0 / 3,
     step=[8, 11])
 checkpoint_config = dict(interval=1)
+
 # yapf:disable
 log_config = dict(
     interval=50,
@@ -164,6 +169,7 @@ log_config = dict(
         # dict(type='TensorboardLoggerHook')
     ])
 # yapf:enable
+
 # runtime settings
 total_epochs = 12
 dist_params = dict(backend='nccl')

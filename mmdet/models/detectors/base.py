@@ -3,8 +3,8 @@ from abc import ABCMeta, abstractmethod
 
 import mmcv
 import numpy as np
-import pycocotools.mask as maskUtils
 import torch.nn as nn
+import pycocotools.mask as maskUtils
 
 from mmdet.core import auto_fp16, get_classes, tensor2imgs
 
@@ -16,7 +16,7 @@ class BaseDetector(nn.Module):
 
     def __init__(self):
         super(BaseDetector, self).__init__()
-        self.fp16_enabled = False
+        self.fp16_enabled = False       # diff
 
     @property
     def with_neck(self):

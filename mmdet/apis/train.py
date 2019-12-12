@@ -3,12 +3,13 @@ import re
 from collections import OrderedDict
 
 import torch
-from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import DistSamplerSeedHook, Runner, obj_from_dict
+from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from mmdet import datasets
 from mmdet.core import (CocoDistEvalmAPHook, CocoDistEvalRecallHook,
-                        DistEvalmAPHook, DistOptimizerHook, Fp16OptimizerHook)
+                        DistEvalmAPHook, DistOptimizerHook, Fp16OptimizerHook,
+                        DistEvalCaltechMR, DistEvalKaistMR, DistEvalCvcMR)
 from mmdet.datasets import DATASETS, build_dataloader
 from mmdet.models import RPN
 from .env import get_root_logger
@@ -193,18 +194,18 @@ def _dist_train(model, dataset, cfg, validate=False):
 
 
 def _non_dist_train(model, dataset, cfg, validate=False):
-    if validate:
-        raise NotImplementedError('Built-in validation is not implemented '
-                                  'yet in not-distributed training. Use '
-                                  'distributed training or test.py and '
-                                  '*eval.py scripts instead.')
+    # if validate:
+    #     raise NotImplementedError('Built-in validation is not implemented '
+    #                               'yet in not-distributed training. Use '
+    #                               'distributed training or test.py and '
+    #                               '*eval.py scripts instead.')
     # prepare data loaders
     dataset = dataset if isinstance(dataset, (list, tuple)) else [dataset]
     data_loaders = [
         build_dataloader(
             ds,
-            cfg.data.imgs_per_gpu,
-            cfg.data.workers_per_gpu,
+            cfg.data.imgs_per_gpu,      # 4
+            cfg.data.workers_per_gpu,   # 2
             cfg.gpus,
             dist=False) for ds in dataset
     ]
@@ -224,6 +225,19 @@ def _non_dist_train(model, dataset, cfg, validate=False):
         optimizer_config = cfg.optimizer_config
     runner.register_training_hooks(cfg.lr_config, optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config)
+
+    """
+    Author:YY
+    Description: The following "if" code is used to register a hook for evaluating the MR of corresponding dataset. 
+    Call chain: DistEvalxxxMR -> evaluate() -> eval_xxx_mr() -> eng.xxx_eval()
+    """
+    if validate:
+        if 'Caltech' in cfg.data.val['type']:
+            runner.register_hook(DistEvalCaltechMR(cfg.data.val))
+        if 'Kaist' in cfg.data.val['type']:
+            runner.register_hook(DistEvalKaistMR(cfg.data.val))
+        if 'Cvc' in cfg.data.val['type']:
+            runner.register_hook(DistEvalCvcMR(cfg.data.val))
 
     if cfg.resume_from:
         runner.resume(cfg.resume_from)

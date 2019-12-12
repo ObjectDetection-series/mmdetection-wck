@@ -60,21 +60,25 @@ class CustomDataset(Dataset):
                     or osp.isabs(self.proposal_file)):
                 self.proposal_file = osp.join(self.data_root,
                                               self.proposal_file)
+
         # load annotations (and proposals)
         self.img_infos = self.load_annotations(self.ann_file)
         if self.proposal_file is not None:
             self.proposals = self.load_proposals(self.proposal_file)
         else:
             self.proposals = None
+
         # filter images with no annotation during training
         if not test_mode:
             valid_inds = self._filter_imgs()
             self.img_infos = [self.img_infos[i] for i in valid_inds]
             if self.proposals is not None:
                 self.proposals = [self.proposals[i] for i in valid_inds]
-        # set group flag for the sampler
+
+        # set group flag for the sampler    处于训练阶段时，根据高宽比，分组flag[]
         if not self.test_mode:
             self._set_group_flag()
+
         # processing pipeline
         self.pipeline = Compose(pipeline)
 

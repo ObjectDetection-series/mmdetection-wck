@@ -13,6 +13,14 @@ from torch.utils.data import Dataset
 from mmdet import datasets
 from .coco_utils import fast_eval_recall, results2json
 from .mean_ap import eval_map
+from .eval_miss_rate import eval_caltech_mr, eval_kaist_mr, eval_cvc_mr
+
+
+"""
+Author:Yuan Yuan
+Date:2018/12/01
+Description: change after_train_epoch()
+"""
 
 
 class DistEvalHook(Hook):
@@ -47,30 +55,144 @@ class DistEvalHook(Hook):
                     return_loss=False, rescale=True, **data_gpu)
             results[idx] = result
 
-            batch_size = runner.world_size
-            if runner.rank == 0:
-                for _ in range(batch_size):
-                    prog_bar.update()
+            """
+            Yuan add following code for evaluating miss rate using matlab code.
+            For each image, detection result will be written into it's corresponding text file.
+            Matlab script will load those detection results and perform evaluation.
+            It is finished with matlab engine on background.
+            detection result -> text file -> matlab script
+            """
+            # image path
+            # print(self.dataset.img_infos[idx]['filename'])      # for debug
+            img_path = self.dataset.img_infos[idx]['filename']
+            res_path = img_path.replace('images', 'res')
+            if 'visible' in res_path:
+                res_path = res_path.replace('/visible/', '/')
+            res_path = res_path.replace('.jpg', '.txt')
+            res_path = res_path.replace('.png', '.txt')
+            if os.path.exists(res_path):
+                os.remove(res_path)
+            os.mknod(res_path)
+            """
+            For faster-rcnn, the result is a list, each element in list is result for a object class.
+            In pedestrian detection, there is only one class.
+            For RPN, the result is a numpy. The result of RPN is category-independent.
+            """
+            if isinstance(result, list):
+                np.savetxt(res_path, result[0])
+            else:
+                np.savetxt(res_path, result)
 
-        if runner.rank == 0:
-            print('\n')
-            dist.barrier()
-            for i in range(1, runner.world_size):
-                tmp_file = osp.join(runner.work_dir, 'temp_{}.pkl'.format(i))
-                tmp_results = mmcv.load(tmp_file)
-                for idx in range(i, len(results), runner.world_size):
-                    results[idx] = tmp_results[idx]
-                os.remove(tmp_file)
-            self.evaluate(runner, results)
-        else:
-            tmp_file = osp.join(runner.work_dir,
-                                'temp_{}.pkl'.format(runner.rank))
-            mmcv.dump(results, tmp_file)
-            dist.barrier()
+            batch_size = runner.world_size
+            for _ in range(batch_size):
+                prog_bar.update()
+
+        """
+        yuan comment following code because of new evaluation method.
+        """
+        # if runner.rank == 0:
+        #     print('\n')
+        #     dist.barrier()
+        #     for i in range(1, runner.world_size):
+        #         tmp_file = osp.join(runner.work_dir, 'temp_{}.pkl'.format(i))
+        #         tmp_results = mmcv.load(tmp_file)
+        #         for idx in range(i, len(results), runner.world_size):
+        #             results[idx] = tmp_results[idx]
+        #         os.remove(tmp_file)
+        #     self.evaluate(runner, results)
+        # else:
+        #     tmp_file = osp.join(runner.work_dir,
+        #                         'temp_{}.pkl'.format(runner.rank))
+        #     mmcv.dump(results, tmp_file)
+        #     dist.barrier()
+        """
+        yuan add following line.
+        """
+        self.evaluate(runner, results)
+
         dist.barrier()
 
     def evaluate(self):
         raise NotImplementedError
+
+# class DistEvalHook(Hook):
+#
+#     def __init__(self, dataset, interval=1):
+#         if isinstance(dataset, Dataset):
+#             self.dataset = dataset
+#         elif isinstance(dataset, dict):
+#             self.dataset = datasets.build_dataset(dataset, {'test_mode': True})
+#         else:
+#             raise TypeError(
+#                 'dataset must be a Dataset object or a dict, not {}'.format(
+#                     type(dataset)))
+#         self.interval = interval
+#
+#     def after_train_epoch(self, runner):
+#         if not self.every_n_epochs(runner, self.interval):
+#             return
+#         runner.model.eval()
+#         results = [None for _ in range(len(self.dataset))]
+#         if runner.rank == 0:
+#             prog_bar = mmcv.ProgressBar(len(self.dataset))
+#         for idx in range(runner.rank, len(self.dataset), runner.world_size):
+#             data = self.dataset[idx]
+#             data_gpu = scatter(
+#                 collate([data], samples_per_gpu=1),
+#                 [torch.cuda.current_device()])[0]
+#
+#             # compute output
+#             with torch.no_grad():
+#                 result = runner.model(
+#                     return_loss=False, rescale=True, **data_gpu)
+#             results[idx] = result
+#
+#             batch_size = runner.world_size
+#             if runner.rank == 0:
+#                 for _ in range(batch_size):
+#                     prog_bar.update()
+#
+#         if runner.rank == 0:
+#             print('\n')
+#             dist.barrier()
+#             for i in range(1, runner.world_size):
+#                 tmp_file = osp.join(runner.work_dir, 'temp_{}.pkl'.format(i))
+#                 tmp_results = mmcv.load(tmp_file)
+#                 for idx in range(i, len(results), runner.world_size):
+#                     results[idx] = tmp_results[idx]
+#                 os.remove(tmp_file)
+#             self.evaluate(runner, results)
+#         else:
+#             tmp_file = osp.join(runner.work_dir,
+#                                 'temp_{}.pkl'.format(runner.rank))
+#             mmcv.dump(results, tmp_file)
+#             dist.barrier()
+#         dist.barrier()
+#
+#     def evaluate(self):
+#         raise NotImplementedError
+
+
+"""
+Author:Yuan Yuan
+Date:2019/02/11
+Description:these three hook classes are used for launching Matlab evaluation script.
+"""
+
+
+class DistEvalCaltechMR(DistEvalHook):
+    def evaluate(self, runner, results):
+        eval_caltech_mr()
+
+
+class DistEvalKaistMR(DistEvalHook):
+    def evaluate(self, runner, results):
+        eval_kaist_mr()
+
+
+class DistEvalCvcMR(DistEvalHook):
+    def evaluate(self, ruuner, results):
+        eval_cvc_mr()
 
 
 class DistEvalmAPHook(DistEvalHook):

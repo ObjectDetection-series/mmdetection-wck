@@ -60,6 +60,7 @@ class RPN(BaseDetector, RPNTestMixin):
         return losses
 
     def simple_test(self, img, img_meta, rescale=False):
+        """Test without augmentation."""
         x = self.extract_feat(img)
         proposal_list = self.simple_test_rpn(x, img_meta, self.test_cfg.rpn)
         if rescale:
@@ -69,6 +70,7 @@ class RPN(BaseDetector, RPNTestMixin):
         return proposal_list[0].cpu().numpy()
 
     def aug_test(self, imgs, img_metas, rescale=False):
+        """Test with augmentation."""
         proposal_list = self.aug_test_rpn(
             self.extract_feats(imgs), img_metas, self.test_cfg.rpn)
         if not rescale:

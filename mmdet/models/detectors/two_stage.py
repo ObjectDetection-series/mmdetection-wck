@@ -20,7 +20,7 @@ class TwoStageDetector(BaseDetector, RPNTestMixin, BBoxTestMixin,
     def __init__(self,
                  backbone,
                  neck=None,
-                 shared_head=None,
+                 shared_head=None,      # diff YY: upper_neck=None,
                  rpn_head=None,
                  bbox_roi_extractor=None,
                  bbox_head=None,
@@ -177,7 +177,7 @@ class TwoStageDetector(BaseDetector, RPNTestMixin, BBoxTestMixin,
             losses.update(rpn_losses)
 
             proposal_cfg = self.train_cfg.get('rpn_proposal',
-                                              self.test_cfg.rpn)
+                                              self.test_cfg.rpn)        # diff
             proposal_inputs = rpn_outs + (img_meta, proposal_cfg)
             proposal_list = self.rpn_head.get_bboxes(*proposal_inputs)
         else:
@@ -186,8 +186,7 @@ class TwoStageDetector(BaseDetector, RPNTestMixin, BBoxTestMixin,
         # assign gts and sample proposals
         if self.with_bbox or self.with_mask:
             bbox_assigner = build_assigner(self.train_cfg.rcnn.assigner)
-            bbox_sampler = build_sampler(
-                self.train_cfg.rcnn.sampler, context=self)
+            bbox_sampler = build_sampler(self.train_cfg.rcnn.sampler, context=self)
             num_imgs = img.size(0)
             if gt_bboxes_ignore is None:
                 gt_bboxes_ignore = [None for _ in range(num_imgs)]

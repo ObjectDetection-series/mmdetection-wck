@@ -60,7 +60,7 @@ class CocoDataset(CustomDataset):
 
         Args:
             ann_info (list[dict]): Annotation info of an image.
-            with_mask (bool): Whether to parse mask annotations.
+            with_mask (bool): Whether to parse mask annotations.  此处应该是还没有修正
 
         Returns:
             dict: A dict containing the following keys: bboxes, bboxes_ignore,
