@@ -1,4 +1,7 @@
-function varargout = bbGt( action, varargin )
+function varargout = bbGt2( action, varargin )      
+% Original: function varargout = bbGt( action, varargin )
+% Changed in 2019.12.12
+%
 % Bounding box (bb) annotations struct, evaluation and sampling routines.
 %
 % bbGt gives access to two types of routines:
@@ -85,7 +88,7 @@ function varargout = bbGt( action, varargin )
 
 %#ok<*DEFNU>
 varargout = cell(1,max(1,nargout));
-[varargout{:}] = feval(action,varargin{:});
+[varargout{:}] = feval(action,varargin{:});     % bug
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -527,7 +530,9 @@ for d=1:m, dir1=dirs{d}; dir1(dir1=='\')=sep; dir1(dir1=='/')=sep;
   if(dir1(end)==sep), dir1(end)=[]; end; dirs{d}=dir1; end
 
 % Read subset file
-fp=fopen(subset, 'r'); info=textscan(fp, '%s%s%s', 'Delimiter', '/');  fclose(fp);
+fp=fopen(subset, 'r'); 
+info=textscan(fp, '%s%s%s', 'Delimiter', '/');  
+fclose(fp);
 
 [fs1,fs0] = getFiles0(dirs{1},info,inputTypes{1},f0,f1);
 n1=length(fs0); fs=cell(m,n1); fs(1,:)=fs1;

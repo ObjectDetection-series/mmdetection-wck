@@ -2,8 +2,8 @@
 % Date:2019/02/13
 % Description: This file is modified based on project of 'rgbt-ped-detection'
 %                     Used for evaluating average miss rate in pedestrian
-%                     detection.This script depends on 'bbGt2.m' and
-%                     Piotr's Computer Vision Matlab Toolbox,Version 3.26.
+%                     detection. This script depends on 'bbGt2.m' and
+%                     Piotr's Computer Vision Matlab Toolbox, Version 3.26.
 fprintf('\ncvc dataset evaluating...\n');
 %% parameters setting
 pLoad={'lbls',{'person'},'ilbls',{'people','person?','cyclist'},'squarify',{3,.41}};  % for traing and test (common)

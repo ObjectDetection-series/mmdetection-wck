@@ -145,7 +145,8 @@ data = dict(
         type='CocoDataset',
         ann_file=data_root + 'annotations-json/test-all.json',
         img_prefix=data_root + 'images/',
-        ipipeline=test_pipeline))
+        ipipeline=test_pipeline,
+        test_mode=True))        # It is added by kai
 
 # optimizer
 optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)

@@ -1,7 +1,7 @@
 # model settings
 model = dict(
     type='FasterRCNN',
-    pretrained='/media/ser606/Data/DoubleCircle/model/resnet50-19c8e357.pth',
+    pretrained='torchvision://resnet50',
     backbone=dict(
         type='ResNet',
         depth=50,
@@ -65,14 +65,14 @@ train_cfg = dict(
             add_gt_as_proposals=False),
         allowed_border=0,
         pos_weight=-1,
-        debug=False),
-    rpn_proposal=dict(
-        nms_across_levels=False,
-        nms_pre=20000,
-        nms_post=20000,
-        max_num=5000,
-        nms_thr=0.9,
-        min_bbox_size=0),
+        debug=False,
+        nms=dict(
+            nms_across_levels=False,
+            nms_pre=20000,
+            nms_post=20000,
+            max_num=5000,
+            nms_thr=0.9,
+            min_bbox_size=0)),
     rcnn=dict(
         assigner=dict(
             type='MaxIoUAssigner',
@@ -100,7 +100,8 @@ test_cfg = dict(
         score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))
 
 # dataset settings
-dataset_type = 'ExtendedCvcDataset'
+# dataset_type = 'ExtendedCvcDataset'
+dataset_type = 'CvcDataset'
 data_root = '/home/server-248/WangCK/Data/datasets/CVC/'
 img_norm_cfg = dict(
     mean=[123.675, 123.675, 123.675], std=[58.395, 58.395, 58.395], to_rgb=False)

@@ -20,7 +20,8 @@ Description: This script is used to train detectors with config file.
 def main():
     configs = \
         [
-            '../../configs/cvc09/faster_rcnn_r50_c4_cvc.py'
+            # '../../configs/cvc09/faster_rcnn_r50_c4_cvc.py',
+            '../../configs/cvc09/faster_rcnn_r50_fpn_cvc.py'
         ]
 
     for config in configs:
@@ -36,7 +37,7 @@ def main():
                 mmdet_version=__version__, config=cfg.text)
 
         username = getpass.getuser()
-        temp_file = '/home/' + username + '/WangCK/workspace/temp/temp.txt'
+        temp_file = '/home/' + username + '/WangCK/Data/temp/temp.txt'
         fo = open(temp_file, 'w+')
         str_write = cfg.work_dir.replace('../..', ('/home/'+username+'/WangCK/workspace/mmdetection-wck'))
         fo.write(str_write)

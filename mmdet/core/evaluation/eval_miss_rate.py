@@ -2,9 +2,9 @@
 Author: Yuan Yuan.
 Date:2019/02/11.
 Description: this file defines a function to start Matlab engine on background
-             and perform miss rate evaluation.dbEval() is a srcipt for evaluating
+             and perform miss rate evaluation. dbEval() is a srcipt for evaluating
              miss rate used in pedestrian detection.
-             The related path should be set in Matlab path variable. (This word is important)
+             The related path should be set iln Matlab path variabe. (This word is important)
 """
 import matlab.engine
 
