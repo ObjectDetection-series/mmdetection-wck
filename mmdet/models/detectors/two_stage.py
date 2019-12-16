@@ -90,6 +90,14 @@ class TwoStageDetector(BaseDetector, RPNTestMixin, BBoxTestMixin,
         """Directly extract features from the backbone+neck
         """
         x = self.backbone(img)
+        """
+        Kai adds the following lines.
+        They are used to observe the shape of x(feature maps obtained by backbone).
+        """
+        print(x[0].shape)
+        print(x[1].shape)
+        print(x[2].shape)
+        print(x[3].shape)
         if self.with_neck:
             x = self.neck(x)
         return x

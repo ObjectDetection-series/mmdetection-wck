@@ -7,20 +7,22 @@
 fprintf('\ncvc dataset evaluating...\n');
 %% parameters setting
 pLoad={'lbls',{'person'},'ilbls',{'people','person?','cyclist'},'squarify',{3,.41}};  % for traing and test (common)
-pLoad = [pLoad, 'hRng',[50 inf], 'vType',{{'none'}},'xRng',[5 635],'yRng',[5 475]];  % for testing config
+pLoad = [pLoad, 'hRng',[50 inf], 'vType',{{'none'}},'xRng',[5 635],'yRng',[5 475]];   % for testing config
 reapply = 1;
 thr = 0.5;
 mul = 0;
 show = 0;
 lims = [3.1e-3 1e1 .05 1];
 ref = 10.^(-2:.25:0);
-dataDir = ['/media/',getenv('USER'),'/Data/DoubleCircle/datasets/CVC'];
+% kai change this line
+% dataDir = ['/media/',getenv('USER'),'/Data/DoubleCircle/datasets/CVC'];     
+dataDir = ['/home/',getenv('USER'),'/WangCK/Data/datasets/CVC'];
 gtDir = [dataDir,'/annotations'];
 dtDir = [dataDir,'/res'];
 subset =[dataDir,'/imageSets/test-all.txt'];
 
 %% evaluating detection results
-[gt,dt]=bbGt2('loadAll',gtDir,dtDir,pLoad,subset);
+[gt,dt]=bbGt2('loadAll',gtDir,dtDir,pLoad,subset);      % exist bug
 max_score_list = [];
 for ii=1:length(gt)
     if ~isempty(gt{ii})
@@ -42,7 +44,8 @@ miss=exp(mean(log(max(1e-10,1-miss))));
 roc=[score fp tp];
 fprintf('\nlog-average miss rate = %.2f%%\n',miss*100);
 
-fid = fopen('/media/ser606/Data/DoubleCircle/temp/temp.txt','r');
+% fid = fopen('/media/ser606/Data/DoubleCircle/temp/temp.txt','r');
+fid = fopen('/home/server-248/WangCK/Data/temp/temp.txt','r');
 str = fgets(fid);
 fclose(fid);
 

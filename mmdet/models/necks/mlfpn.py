@@ -52,6 +52,9 @@ class ConvWS2d(nn.Conv2d):
 
 
 class BasicConv(nn.Module):
+    """
+    Kai: In Article, one block is composed of "Conv + BN + ReLU"
+    """
 
     def __init__(self,
                  in_planes,
@@ -183,10 +186,10 @@ class MLFPN(nn.Module):
             self,
             backbone_choice,
             in_channels,
-            planes,  # internal plane size
-            scale_outs_num,  # scale_feature_num
-            tum_num,  # tum_num
-            smooth,  # smooth
+            planes,                 # internal plane size
+            scale_outs_num,         # scale_feature_num
+            tum_num,                # tum_num
+            smooth,                 # smooth
             base_feature_size,
             base_choice,
             base_list,
@@ -304,6 +307,6 @@ class MLFPN(nn.Module):
             output = []
 
             for i in range(0, self.num_scales, 1):
-                output.append(sources[i])  # use 4,8,16,32,64
+                output.append(sources[i])        # use 4,8,16,32,64
 
             return tuple(output)

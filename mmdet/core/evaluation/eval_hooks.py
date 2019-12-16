@@ -1,5 +1,6 @@
 import os
 import os.path as osp
+import time
 
 import mmcv
 import numpy as np
@@ -36,6 +37,27 @@ class DistEvalHook(Hook):
                     type(dataset)))
         self.interval = interval
 
+    """
+    Kai add this method.
+    """
+    def _barrier(self, rank, world_size):
+        """Due to some issues with `torch.distributed.barrier()`, we have to
+        implement this ugly barrier function.
+        """
+        if rank == 0:
+            for i in range(1, world_size):
+                tmp = osp.join(self.lock_dir, '{}.pkl'.format(i))
+                while not (osp.exists(tmp)):
+                    time.sleep(1)
+            for i in range(1, world_size):
+                tmp = osp.join(self.lock_dir, '{}.pkl'.format(i))
+                os.remove(tmp)
+        else:
+            tmp = osp.join(self.lock_dir, '{}.pkl'.format(rank))
+            mmcv.dump([], tmp)
+            while osp.exists(tmp):
+                time.sleep(1)
+
     def after_train_epoch(self, runner):
         if not self.every_n_epochs(runner, self.interval):
             return
@@ -63,13 +85,16 @@ class DistEvalHook(Hook):
             detection result -> text file -> matlab script
             """
             # image path
-            # print(self.dataset.img_infos[idx]['filename'])      # for debug
             img_path = self.dataset.img_infos[idx]['filename']
-            res_path = img_path.replace('images', 'res')
+            res_path = img_path.replace('images', 'res')        # res : result
+            # print()             # for debug
+            # print(img_path)     # for debug
+            # print(res_path)     # for debug
             if 'visible' in res_path:
                 res_path = res_path.replace('/visible/', '/')
             res_path = res_path.replace('.jpg', '.txt')
             res_path = res_path.replace('.png', '.txt')
+            # print(res_path)     # for debug
             if os.path.exists(res_path):
                 os.remove(res_path)
             os.mknod(res_path)
@@ -110,7 +135,8 @@ class DistEvalHook(Hook):
         """
         self.evaluate(runner, results)
 
-        dist.barrier()
+        # dist.barrier()
+        self._barrier(runner.rank, runner.world_size)
 
     def evaluate(self):
         raise NotImplementedError
