@@ -6,21 +6,21 @@ model = dict(
         type='ResNet',
         depth=50,
         num_stages=4,
-        out_indices=(0, 1, 2, 3),
+        out_indices=(0, 1, 2, 3),       # important
         frozen_stages=1,
         style='pytorch'),
     neck=dict(
         type='FPN',
-        in_channels=[256, 512, 1024, 2048],
+        in_channels=[256, 512, 1024, 2048],     # corresponding to out-ch of each stage in backbone
         out_channels=256,
-        out_indices=[0, 1, 2, 3],       # diff
-        num_outs=4),                    # diff
+        out_indices=[0, 1, 2, 3],               # YY add the param
+        num_outs=4),                            # backbone + MFLPN -> [4, 256, H, W]
     rpn_head=dict(
         type='RPNHead',
-        in_channels=256,
+        in_channels=256,        # corresponding to param out_channels in neck
         feat_channels=128,
         anchor_scales=[8, 10, 12, 14],
-        anchor_ratios=[1.0 / 0.5, 1.0],
+        anchor_ratios=[1.0 / 0.5, 1.0],     # [2.0, 1.0]
         anchor_strides=[4, 8, 16, 32],
         anchor_base_sizes=[4, 8, 16, 32],
         target_means=[.0, .0, .0, .0],
@@ -102,7 +102,7 @@ test_cfg = dict(
 # dataset settings
 # dataset_type = 'ExtendedCvcDataset'
 dataset_type = 'CvcDataset'
-data_root = '/home/server-248/WangCK/Data/datasets/CVC/'
+data_root = '/home/ser248/WangCK/Data/datasets/CVC/'
 img_norm_cfg = dict(
     mean=[123.675, 123.675, 123.675], std=[58.395, 58.395, 58.395], to_rgb=False)
 train_pipeline = [
@@ -131,7 +131,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    imgs_per_gpu=4,
+    imgs_per_gpu=2,         # 4
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,

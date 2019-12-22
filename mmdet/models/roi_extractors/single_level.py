@@ -11,6 +11,7 @@ from ..registry import ROI_EXTRACTORS
 @ROI_EXTRACTORS.register_module
 class SingleRoIExtractor(nn.Module):
     """Extract RoI features from a single level feature map.
+    从单一层级的feature map提取RoI features
 
     If there are mulitple input feature levels, each RoI is mapped to a level
     according to its scale.

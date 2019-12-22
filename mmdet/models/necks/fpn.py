@@ -14,6 +14,7 @@ class FPN(nn.Module):
                  in_channels,
                  out_channels,
                  num_outs,
+
                  start_level=0,
                  end_level=-1,
                  add_extra_convs=False,
@@ -23,6 +24,7 @@ class FPN(nn.Module):
                  conv_cfg=None,
                  norm_cfg=None,
                  activation=None,
+
                  out_indices=None):
         super(FPN, self).__init__()
         assert isinstance(in_channels, list)

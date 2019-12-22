@@ -1,5 +1,5 @@
 # model settings
-input_size = 320        # this param is for VGG
+# input_size = 320        # this param is for VGG
 model = dict(
     type='FasterRCNN',
     pretrained='torchvision://resnet50',
@@ -12,23 +12,24 @@ model = dict(
         style='pytorch'),
     neck=dict(
         type='MLFPN',
-        backbone_choice="ResNet",  # "SSD" or "ResNet"
+        backbone_choice="ResNet",   # "SSD" or "ResNet"
         in_channels=[256, 512, 1024, 2048],
-        planes=256,
-        scale_outs_num=6,
-        tum_num=8,
-        smooth=True,
-        base_feature_size=4,
-        base_choice=2,
-        base_list=[2, 3],
+        out_indices=[0, 1, 2, 3],   # kai add the param, correspond to 'scale_outs_num'(not used!)
+        planes=256,                 # out_channels of each scale feature
+        scale_outs_num=4,           # the num of scale obtained by each TUM
+        tum_num=2,                  # the num of TUM module: 8 -> 4 -> 2
+        smooth=True,                # the param is used in TUM
+        base_feature_size=4,        # ?
+        base_choice=2,              # the param is used to choose 'ResNet' or others
+        base_list=[2, 3],           # the param is used to choose the elements in 'dim_conv'
         norm=True,
-        ssd_style_tum=False
+        ssd_style_tum=False         # ?
         # the size of the smallest tum ouput =>( '-2' or '/2')
-    ),
+    ),                              # backbone + MFLPN -> [4, 2048, H, W]
     rpn_head=dict(
         type='RPNHead',
-        in_channels=256,
-        feat_channels=128,
+        in_channels=512,            # kai change this param: 256 -> 2048 -> 1024 -> 512
+        feat_channels=256,          # kai change this param: 128 -> 256
         anchor_scales=[8, 10, 12, 14],
         anchor_ratios=[1.0 / 0.5, 1.0],
         anchor_strides=[4, 8, 16, 32],
@@ -42,13 +43,13 @@ model = dict(
     bbox_roi_extractor=dict(
         type='SingleRoIExtractor',
         roi_layer=dict(type='RoIAlign', out_size=7, sample_num=-1),
-        out_channels=256,
+        out_channels=512,             # kai: 256 -> 2048 -> 1024 -> 512
         featmap_strides=[4, 8, 16, 32]),
     bbox_head=dict(
         type='SharedFCBBoxHead',
         num_fcs=2,
-        in_channels=256,
-        fc_out_channels=512,
+        in_channels=512,        # kai: 256 -> 2048 -> 1024 -> 512
+        fc_out_channels=512,    # kai: 512
         roi_feat_size=7,
         num_classes=2,      # background and pedestrian
         target_means=[0., 0., 0., 0.],
@@ -112,13 +113,13 @@ test_cfg = dict(
 # dataset settings
 # dataset_type = 'ExtendedCvcDataset'
 dataset_type = 'CvcDataset'
-data_root = '/home/server-248/WangCK/Data/datasets/CVC/'
+data_root = '/home/ser248/WangCK/Data/datasets/CVC/'
 img_norm_cfg = dict(
     mean=[123.675, 123.675, 123.675], std=[58.395, 58.395, 58.395], to_rgb=False)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', with_bbox=True),
-    dict(type='Resize', img_scale=(640, 480), keep_ratio=True),    # diff
+    dict(type='Resize', img_scale=(960, 736), keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size_divisor=32),
@@ -129,7 +130,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(640, 480),      # diff
+        img_scale=(960, 736),      # diff
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),
@@ -141,7 +142,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    imgs_per_gpu=4,
+    imgs_per_gpu=4,     # batch size
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
@@ -160,7 +161,7 @@ data = dict(
         pipeline=test_pipeline))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)    # lr: 0.001 -> 0.01 -> 0.02 weight_decay: 0.0001
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 
 # learning policy
@@ -170,7 +171,7 @@ lr_config = dict(
     # warmup_iters=2000,
     # warmup_ratio=1.0 / 3,
     step=[4, 8])
-checkpoint_config = dict(interval=1)
+checkpoint_config = dict(interval=5)
 
 # yapf:disable
 log_config = dict(
@@ -182,10 +183,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 20
+total_epochs = 130       # 20 -> 40 -> 100
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '../../work_dirs/faster_rcnn_r50_fpn_cvc'        # log文件和模型保存的路径
+# work_dir = '../../work_dirs/faster_rcnn_r50_fpn_cvc'        # log文件和模型保存的路径
+work_dir = '/media/ser248/3rd/WangCK/Data/mmdetection-wck/work_dirs/faster_rcnn_r50_mlfpn_cvc'
 load_from = None
-resume_from = None
+resume_from = '/media/ser248/3rd/WangCK/Data/mmdetection-wck/work_dirs/faster_rcnn_r50_mlfpn_cvc/latest.pth'
 workflow = [('train', 1)]

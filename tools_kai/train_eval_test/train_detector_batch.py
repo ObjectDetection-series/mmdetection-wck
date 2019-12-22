@@ -8,6 +8,7 @@ from mmdet.models import build_detector
 import os
 import os.path as osp
 import getpass
+import time
 
 
 """
@@ -18,14 +19,19 @@ Description: This script is used to train detectors with config file.
 
 
 def main():
+    t0 = time.time()
     configs = \
         [
             # '../../configs/cvc09/faster_rcnn_r50_c4_cvc.py',
-            '../../configs/cvc09/faster_rcnn_r50_fpn_cvc.py',
+            # '../../configs/cvc09/faster_rcnn_r50_fpn_cvc.py',
             # '../../configs/cvc09/faster_rcnn_r50_mlfpn_cvc.py',
-
             # '../../configs/cvc09/faster_rcnn_v16_c5_cvc.py',
             # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
+
+            # '../../configs/kaist/mul_faster_rcnn_r50_c4_add_kaist.py',
+            # '../../configs/kaist/mul_faster_rcnn_r50_c4_cat_kaist.py',
+            '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
+            # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
         ]
 
     for config in configs:
@@ -41,9 +47,9 @@ def main():
                 mmdet_version=__version__, config=cfg.text)
 
         username = getpass.getuser()
-        temp_file = '/home/' + username + '/WangCK/Data/temp/temp.txt'
+        temp_file = '/media/' + username + '/3rd/WangCK/Data/temp/temp.txt'
         fo = open(temp_file, 'w+')
-        str_write = cfg.work_dir.replace('../..', ('/home/'+username+'/WangCK/workspace/mmdetection-wck'))
+        str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
         fo.write(str_write)
         fo.close()
 
@@ -65,9 +71,11 @@ def main():
             train_dataset,
             cfg,
             distributed=distributed,
-            validate=True,
+            validate=False,
             logger=logger
         )
+        t1 = time.time()
+        logger.info("Total training time: {}m".format((t1-t0) // 60))
 
 
 if __name__ == '__main__':

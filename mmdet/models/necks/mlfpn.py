@@ -176,25 +176,31 @@ class TUM(nn.Module):
         return deconved_feat
 
 
-dim_conv = [256, 512, 1024, 2048]
+dim_conv = [256, 512, 1024, 2048]   # 对应Resnet50每个stage的out-chs？
 
 
 @NECKS.register_module
 class MLFPN(nn.Module):
+    """
+    Args:
+        backbone_choice: 'ResNet' or 'VGG'. About VGG, it need to be designed by me.
+        scale_outs_num: each TUM will output features with scales.
+    """
 
     def __init__(
             self,
             backbone_choice,
             in_channels,
-            planes,                 # internal plane size
-            scale_outs_num,         # scale_feature_num
-            tum_num,                # tum_num
+            planes,                 # internal plane size, 256
+            scale_outs_num,         # scale_feature_num, 6
+            tum_num,                # tum_num, 8
             smooth,                 # smooth
-            base_feature_size,
-            base_choice,
-            base_list,
+            base_feature_size,      # ?
+            base_choice,            # ?
+            base_list,              # base_list=[2, 3]
             norm,
             ssd_style_tum=True,
+            out_indices=None
     ):
         super(MLFPN, self).__init__()
         # print(type(base_list))
@@ -210,13 +216,14 @@ class MLFPN(nn.Module):
         self.norm = norm
         self.backbone_choice = backbone_choice
         self.ssd_style_tum = ssd_style_tum
+        self.out_indices=out_indices        # kai add the line
         # print(self.base_list[1])
         if base_choice == 1:
             self.dim = dim_conv[self.base_list[0]]
         else:
             if self.backbone_choice == 'ResNet':
-                self.shallow_in = dim_conv[self.base_list[0] - 1]
-                self.deep_in = dim_conv[self.base_list[1] - 1]
+                self.shallow_in = dim_conv[self.base_list[0] - 1]   # 512
+                self.deep_in = dim_conv[self.base_list[1] - 1]      # 1024
                 self.shallow_out = 256
                 self.deep_out = 512
             else:
@@ -235,8 +242,8 @@ class MLFPN(nn.Module):
 
             self.leach = nn.ModuleList([
                 BasicConv(
-                    self.deep_out + self.shallow_out,
-                    self.planes // 2,
+                    self.deep_out + self.shallow_out,   # 768
+                    self.planes // 2,                   # 128
                     kernel_size=(1, 1),
                     stride=(1, 1))
             ] * self.num_levels)
@@ -245,8 +252,8 @@ class MLFPN(nn.Module):
             if i == 0:
                 setattr(
                     self, 'unet{}'.format(i + 1),
-                    TUM(first_level=True,
-                        input_planes=self.planes // 2,
+                    TUM(first_level=True,                   # 是否是第一级TUM
+                        input_planes=self.planes // 2,      # 128
                         is_smooth=self.smooth,
                         scales=self.num_scales,
                         side_channel=512,
@@ -278,19 +285,30 @@ class MLFPN(nn.Module):
                 base_feature = input[self.base_list[0]]
             elif self.base_choice == 2:
                 if self.backbone_choice == 'ResNet':
+                    """
+                    Edited by Kai: when base_feature_size==4 & base_choice==2 & backbone_choice=='ResNet',
+                    the following 'if' code will be performed. 
+                    Actually, this part is FFMv1 to obtain base features.           
+                    """
                     base_feature = torch.cat(
-                        (self.reduce(input[self.base_list[0] - 1]),
+                        (self.reduce(input[self.base_list[0] - 1]),         # shallow_out=256
                          F.interpolate(
                              self.up_reduce(input[self.base_list[1] - 1]),
                              scale_factor=2,
-                             mode='nearest')), 1)
+                             mode='nearest')),                              # deep_out=512
+                        1)
                 else:
                     base_feature = torch.cat((self.reduce(input[0]),
                                               F.interpolate(
                                                   self.up_reduce(input[1]),
                                                   scale_factor=2,
                                                   mode='nearest')), 1)
-            # tum_outs is the multi-level multi-scale feature
+
+            """
+            Edited by Kai: this part is used to build TUM. self.num_levels = tum_num, 
+            this parm denote the num of TUM we used.
+            """
+            # tum_outs: is the multi-level multi-scale feature
             tum_outs = [
                 getattr(self, 'unet{}'.format(1))(self.leach[0](base_feature),
                                                   'none')
@@ -299,14 +317,26 @@ class MLFPN(nn.Module):
                 tum_outs.append(
                     getattr(self, 'unet{}'.format(i + 1))(
                         self.leach[i](base_feature), tum_outs[i - 1][-1]))
+
+            """
+            Edited by Kai: this part should be SFAM. But, it only has a scale-wise feature 
+            cat operation, no an adaptive attention mechanism.
+            """
             # concat with same scales
             sources = [
                 torch.cat([_fx[i - 1] for _fx in tum_outs], 1)
                 for i in range(self.num_scales, 0, -1)
-            ]
-            output = []
+            ]               # 使用双重for循环concat不同level, 相同scale的feature maps
+            output = []     # the dim of output=num_scales=scale_outs_num
 
             for i in range(0, self.num_scales, 1):
                 output.append(sources[i])        # use 4,8,16,32,64
+            # return tuple(output)
 
-            return tuple(output)
+            """
+            Kai add following lines for performing 'finest layer of MLFPN' experiment.
+            """
+            if self.out_indices is not None:
+                return tuple([output[i] for i in self.out_indices])
+            else:
+                return tuple(output)

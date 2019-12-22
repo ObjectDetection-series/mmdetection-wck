@@ -90,14 +90,6 @@ class TwoStageDetector(BaseDetector, RPNTestMixin, BBoxTestMixin,
         """Directly extract features from the backbone+neck
         """
         x = self.backbone(img)
-        """
-        Kai adds the following lines.
-        They are used to observe the shape of x(feature maps obtained by backbone).
-        """
-        print(x[0].shape)
-        print(x[1].shape)
-        print(x[2].shape)
-        print(x[3].shape)
         if self.with_neck:
             x = self.neck(x)
         return x
@@ -184,9 +176,15 @@ class TwoStageDetector(BaseDetector, RPNTestMixin, BBoxTestMixin,
                 *rpn_loss_inputs, gt_bboxes_ignore=gt_bboxes_ignore)
             losses.update(rpn_losses)
 
-            proposal_cfg = self.train_cfg.get('rpn_proposal',
-                                              self.test_cfg.rpn)        # diff
-            proposal_inputs = rpn_outs + (img_meta, proposal_cfg)
+            # The following process is important, reference to YY
+            # proposal_cfg = self.train_cfg.get('rpn_proposal',
+            #                                   self.test_cfg.rpn)
+            # proposal_inputs = rpn_outs + (img_meta, proposal_cfg)
+            """
+            Edited by YY, original code use same nms config of RPN during training and testing.
+            They are different now, more proposals can be output to next step during training.
+            """
+            proposal_inputs = rpn_outs + (img_meta, self.train_cfg.rpn.nms)
             proposal_list = self.rpn_head.get_bboxes(*proposal_inputs)
         else:
             proposal_list = proposals

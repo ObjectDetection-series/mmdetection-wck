@@ -7,6 +7,7 @@ Date: 2019.12.11
 Description: This file defines class FasterRCNNMulFPNAdd, inherited from TwoStageDetectorFPNAdd.
 """
 
+
 @DETECTORS.register_module
 class FasterRCNNMulFPNAdd(TwoStageDetectorFPNAdd):
 
