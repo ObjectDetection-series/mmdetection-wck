@@ -34,13 +34,13 @@ class CustomDataset(Dataset):
     CLASSES = None
 
     def __init__(self,
-                 ann_file,
+                 ann_file,              # yes
                  pipeline,
                  data_root=None,
-                 img_prefix='',
+                 img_prefix='',         # yes
                  seg_prefix=None,
-                 proposal_file=None,
-                 test_mode=False):
+                 proposal_file=None,    # yes
+                 test_mode=False):      # yes
         self.ann_file = ann_file
         self.data_root = data_root
         self.img_prefix = img_prefix
