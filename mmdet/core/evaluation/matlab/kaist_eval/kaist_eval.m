@@ -4,7 +4,7 @@
 %                     Used for evaluating average miss rate in pedestrian
 %                     detection.This script depends on 'bbGt2.m' and
 %                     Piotr's Computer Vision Matlab Toolbox,Version 3.26.
-
+fprintf('\nkaist dataset evaluating...\n');
 %% parameters setting
 pLoad={'lbls',{'person'},'ilbls',{'people','person?','cyclist'},'squarify',{3,.41}};  % for traing and test (common)
 pLoad = [pLoad, 'hRng',[50 inf], 'vType',{{'none','partial'}},'xRng',[5 635],'yRng',[5 475]];  % for testing config
@@ -14,7 +14,8 @@ mul = 0;
 show = 0;
 lims = [3.1e-3 1e1 .05 1];
 ref = 10.^(-2:.25:0);
-dataDir = ['/media/',getenv('USER'),'/Data/DoubleCircle/datasets/kaist-rgbt'];
+% dataDir = ['/media/',getenv('USER'),'/3rd/WangCK/Data/datasets/kaist-rgbt'];
+dataDir = ['/home/',getenv('USER'),'/WangCK/Data/datasets/kaist-rgbt'];
 gtDir = [dataDir,'/annotations'];
 dtDir = [dataDir,'/res'];
 subset =[dataDir,'/imageSets/test-all-20.txt'];
@@ -33,7 +34,8 @@ miss=exp(mean(log(max(1e-10,1-miss))));
 roc=[score fp tp];
 fprintf('\nlog-average miss rate = %.2f%%\n',miss*100);
 
-fid = fopen(['/media/',getenv('USER'),'/Data/DoubleCircle/temp/temp.txt'],'r');
+% fid = fopen(['/media/',getenv('USER'),'/3rd/WangCK/Data/temp/temp.txt'],'r');
+fid = fopen(['/home/',getenv('USER'),'/WangCK/Data/temp/temp.txt'],'r');
 str = fgets(fid);
 fclose(fid);
 

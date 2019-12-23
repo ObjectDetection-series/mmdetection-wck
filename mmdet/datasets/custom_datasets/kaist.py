@@ -1,4 +1,5 @@
-from ..custom import CustomDataset
+from ..customV056 import CustomDatasetV056
+from ..registry import DATASETS
 import os.path as osp
 
 import mmcv
@@ -10,31 +11,38 @@ from ..transforms import (ImageTransform, BboxTransform, MaskTransform,
 import cv2
 
 
-class KaistDataset(CustomDataset):
+@DATASETS.register_module
+class KaistDataset(CustomDatasetV056):
     def __init__(self,
-                 ann_file,                  # yes
-                 pipeline,
-                 img_prefix,                # yes
-                 # img_scale,
-                 # img_norm_cfg,
+                 ann_file,
+                 img_prefix,
+                 img_scale,
+                 img_norm_cfg,
                  img_norm_cfg_t,
-                 # size_divisor=None,
+                 size_divisor=None,
                  proposal_file=None,
-                 # num_max_proposals=1000,
-                 # flip_ratio=0,
-                 # with_mask=False,
-                 # with_crowd=True,
-                 # with_label=True,
+                 num_max_proposals=1000,
+                 flip_ratio=0,
+                 with_mask=False,
+                 with_crowd=True,
+                 with_label=True,
                  test_mode=False):
         self.img_norm_cfg_t = img_norm_cfg_t
         # transforms
         self.img_transform_t = ImageTransform(
-            size_divisor=None, **self.img_norm_cfg_t)
+            size_divisor=size_divisor, **self.img_norm_cfg_t)
         super(KaistDataset, self).__init__(
             ann_file=ann_file,
-            pipeline=pipeline,
             img_prefix=img_prefix,
+            img_scale=img_scale,
+            img_norm_cfg=img_norm_cfg,
+            size_divisor=size_divisor,
             proposal_file=proposal_file,
+            num_max_proposals=num_max_proposals,
+            flip_ratio=flip_ratio,
+            with_mask=with_mask,
+            with_crowd=with_crowd,
+            with_label=with_label,
             test_mode=test_mode)
 
     def prepare_train_img(self, idx):

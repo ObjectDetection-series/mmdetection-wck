@@ -25,11 +25,8 @@ def main():
     # all images
     train_filelist = osp.join(txt_dir, 'train-all-02.txt')
     img_all_names = mmcv.list_from_file(train_filelist)
-    # xml_all_paths = [osp.join(xml_dir, '{}.xml'.format(img_name)) for img_name in img_all_names]
-    # img_all_paths = [osp.join(img_dir, '{}.jpg'.format(img_name).replace('/I', '/visible/I')) for img_name in
-    #                 img_all_names]
-    xml_all_paths = [osp.join(xml_dir, img_name.replace('.txt', '.xml')) for img_name in img_all_names]
-    img_all_paths = [osp.join(img_dir, img_name.replace('.txt', '.jpg').replace('/I', '/visible/I')) for img_name in
+    xml_all_paths = [osp.join(xml_dir, '{}.xml'.format(img_name)) for img_name in img_all_names]
+    img_all_paths = [osp.join(img_dir, '{}.jpg'.format(img_name).replace('/I', '/visible/I')) for img_name in
                      img_all_names]
     xml_all_paths = np.array(xml_all_paths)
     img_all_paths = np.array(img_all_paths)
@@ -57,8 +54,8 @@ def main():
     # all test images
     test_filelist = osp.join(txt_dir, 'test-all-20.txt')
     img_test_names = mmcv.list_from_file(test_filelist)
-    xml_test_paths = [osp.join(xml_dir, img_name.replace('.txt', '.xml')) for img_name in img_test_names]
-    img_test_paths = [osp.join(img_dir, img_name.replace('.txt', '.jpg').replace('/I', '/visible/I')) for img_name in
+    xml_test_paths = [osp.join(xml_dir, '{}.xml'.format(img_name)) for img_name in img_test_names]
+    img_test_paths = [osp.join(img_dir, '{}.jpg'.format(img_name).replace('/I', '/visible/I')) for img_name in
                       img_test_names]
     flags = ['test' for _ in img_test_paths]
     test_annotations = track_progress_kai(parse_xml,
@@ -68,8 +65,8 @@ def main():
     # day test images
     test_filelist = osp.join(txt_dir, 'test-day-20.txt')
     img_test_names = mmcv.list_from_file(test_filelist)
-    xml_test_paths = [osp.join(xml_dir, img_name.replace('.txt', '.xml')) for img_name in img_test_names]
-    img_test_paths = [osp.join(img_dir, img_name.replace('.txt', '.jpg').replace('/I', '/visible/I')) for img_name in
+    xml_test_paths = [osp.join(xml_dir, '{}.xml'.format(img_name)) for img_name in img_test_names]
+    img_test_paths = [osp.join(img_dir, '{}.jpg'.format(img_name).replace('/I', '/visible/I')) for img_name in
                       img_test_names]
     flags = ['test' for _ in img_test_paths]
     test_annotations = track_progress_kai(parse_xml,
@@ -79,8 +76,8 @@ def main():
     # night test images
     test_filelist = osp.join(txt_dir, 'test-night-20.txt')
     img_test_names = mmcv.list_from_file(test_filelist)
-    xml_test_paths = [osp.join(xml_dir, img_name.replace('.txt', '.xml')) for img_name in img_test_names]
-    img_test_paths = [osp.join(img_dir, img_name.replace('.txt', '.jpg').replace('/I', 'visible/I')) for img_name in
+    xml_test_paths = [osp.join(xml_dir, '{}.xml'.format(img_name)) for img_name in img_test_names]
+    img_test_paths = [osp.join(img_dir, '{}.jpg'.format(img_name).replace('/I', 'visible/I')) for img_name in
                       img_test_names]
     flags = ['test' for _ in img_test_paths]
     test_annotations = track_progress_kai(parse_xml,

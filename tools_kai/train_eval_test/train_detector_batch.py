@@ -47,9 +47,11 @@ def main():
                 mmdet_version=__version__, config=cfg.text)
 
         username = getpass.getuser()
-        temp_file = '/media/' + username + '/3rd/WangCK/Data/temp/temp.txt'
+        temp_file = '/home/' + username + '/WangCK/Data/temp/temp.txt'
+        # temp_file = '/media/' + username + '/3rd/WangCK/Data/temp/temp.txt'
         fo = open(temp_file, 'w+')
-        str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
+        # str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
+        str_write = cfg.work_dir.replace('../..', ('/home/' + username + '/WangCK/Data'))
         fo.write(str_write)
         fo.close()
 
@@ -71,7 +73,7 @@ def main():
             train_dataset,
             cfg,
             distributed=distributed,
-            validate=False,
+            validate=True,
             logger=logger
         )
         t1 = time.time()

@@ -141,6 +141,10 @@ def track_progress_kai(func, tasks, bar_width=50, **kwargs):
     results = []
     for task in tasks:
         temp = func(task, **kwargs)
+        """
+        Kai: If temp(annotation) returned by func() is not empty, it will be added to results
+        and the prog_bar will update. By contrast, not update.
+        """
         if temp is not None:
             results.append(temp)
             prog_bar.update()
