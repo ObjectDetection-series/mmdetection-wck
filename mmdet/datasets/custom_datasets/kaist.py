@@ -58,7 +58,7 @@ class KaistDataset(CustomDatasetV056):
             img = img_temp
         # load image(thermal)
         img_t_path = osp.join(self.img_prefix, img_info['filename']).replace('visible', 'lwir')
-        img_t = cv2.imread(img_t_path)  # three channels,??? img_t[:,:,0]==img_t[:,:,2]!= img_t[:,:,1]
+        img_t = cv2.imread(img_t_path)      # three channels,??? img_t[:,:,0]==img_t[:,:,2]!= img_t[:,:,1]
         img_t[:, :, 1] = img_t[:, :, 0]
         # load proposals if necessary
         if self.proposals is not None:

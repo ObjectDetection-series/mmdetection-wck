@@ -94,6 +94,7 @@ class CustomDataset(Dataset):
     def get_ann_info(self, idx):
         return self.img_infos[idx]['ann']
 
+    # V10 add
     def pre_pipeline(self, results):
         results['img_prefix'] = self.img_prefix
         results['seg_prefix'] = self.seg_prefix

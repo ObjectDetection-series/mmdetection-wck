@@ -177,7 +177,7 @@ class CustomDatasetV056(Dataset):
         # 获得图片信息，其实跟原标注文件中的images列表类型差不多，img_infos单独将该images字段分离出来，方便处理
         img_info = self.img_infos[idx]
         # load image
-        img = mmcv.imread(osp.join(self.img_prefix, img_info['filename']))      # 读取文件
+        img = mmcv.imread(osp.join(self.img_prefix, img_info['filename']))      
         # load proposals if necessary
         if self.proposals is not None:
             proposals = self.proposals[idx][:self.num_max_proposals]

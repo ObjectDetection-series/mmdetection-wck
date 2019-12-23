@@ -23,7 +23,7 @@ class TwoStageDetectorPreFPNAdd(TwoStageDetectorMul):
             temp = r + t        # element-wise add in each feature maps of RGB images and Thermal images
             x.append(temp)
 
-        # build FPN based on fusion feature maps
+        # build FPN/MLFPN based on fusion feature maps
         x = tuple(x)
         if self.with_neck:
             x = self.neck(x)
