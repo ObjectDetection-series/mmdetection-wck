@@ -67,12 +67,14 @@ def main():
     configs = [
         # '../../configs/cvc09/faster_rcnn_r50_c4_cvc.py',
         # '../../configs/cvc09/faster_rcnn_r50_fpn_cvc.py',
-        '../../configs/cvc09/faster_rcnn_r50_mlfpn_cvc.py',
-
+        # '../../configs/cvc09/faster_rcnn_r50_mlfpn_cvc.py',
         # '../../configs/cvc09/faster_rcnn_v16_c5_cvc.py',
         # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
 
-        # '../../configs/kaist/mul_faster_rcnn_v16_fpn_add_kaist.py'
+        # '../../configs/kaist/mul_faster_rcnn_r50_c4_add_kaist.py',
+        # '../../configs/kaist/mul_faster_rcnn_r50_c4_cat_kaist.py',
+        '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
+        # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
     ]
     for config in configs:
         # load dataset
@@ -82,14 +84,16 @@ def main():
 
         username = getpass.getuser()
         temp_file = '/home/' + username + '/WangCK/Data/temp/temp.txt'
+        # temp_file = '/media/' + username + '/3rd/WangCK/Data/temp/temp.txt'
         fo = open(temp_file, 'w+')
-        str_write = cfg.work_dir.replace('../..', ('/home/' + username + '/WangCK/workspace/mmdetection-wck'))
+        # str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
+        str_write = cfg.work_dir.replace('../..', ('/home/' + username + '/WangCK/Data'))
         fo.write(str_write)
         fo.close()
 
         dataset = obj_from_dict(cfg.data.val, datasets, dict(test_mode=True))
         # load model
-        checkpoint_file = osp.join(cfg.work_dir, 'epoch_40.pth')
+        checkpoint_file = osp.join(cfg.work_dir, 'epoch_1.pth')
         model = build_detector(
             cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
         load_checkpoint(model, checkpoint_file)

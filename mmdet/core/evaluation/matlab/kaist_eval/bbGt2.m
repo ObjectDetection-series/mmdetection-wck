@@ -549,7 +549,7 @@ for d=2:m, fs(d,:)=getFiles0(dirs{d}, info, inputTypes{1}, f0, f1); end
     %     n=length(fs0); for i=1:n, f=fs0{i};
     %       f(find(f=='.',1,'first'):end)=[]; fs0{i}=f; end
     if isempty(inputType), ext = '.txt'; else ext ='.jpg';    end
-    ext = '';   % kai add the line for debug
+    % ext = '';   % kai add the line for debug
     
     fs0=info{3}(f0:min(f1,end));
     if isempty(info{3}{1})
