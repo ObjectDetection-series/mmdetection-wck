@@ -1,6 +1,6 @@
 # model settings
 model = dict(
-    type='FasterRCNNMulFPNAdd',
+    type='FasterRCNNMulFPNCat',
     pretrained='torchvision://resnet50',
     backbone=dict(
         type='MulResnet',

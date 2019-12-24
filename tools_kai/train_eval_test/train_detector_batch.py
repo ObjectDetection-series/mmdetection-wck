@@ -28,10 +28,19 @@ def main():
             # '../../configs/cvc09/faster_rcnn_v16_c5_cvc.py',
             # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
 
+            """
+            dataset:kaist   backbone:r50    
+            """
             # '../../configs/kaist/mul_faster_rcnn_r50_c4_add_kaist.py',
             # '../../configs/kaist/mul_faster_rcnn_r50_c4_cat_kaist.py',
-            '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
+            # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
             # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
+            # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
+            # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
+
+            """
+            dataset:kaist   backbone:v16    
+            """
         ]
 
     for config in configs:
