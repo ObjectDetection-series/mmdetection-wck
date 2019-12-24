@@ -19,7 +19,6 @@ Description: This script is used to train detectors with config file.
 
 
 def main():
-    t0 = time.time()
     configs = \
         [
             # '../../configs/cvc09/faster_rcnn_r50_c4_cvc.py',
@@ -28,19 +27,17 @@ def main():
             # '../../configs/cvc09/faster_rcnn_v16_c5_cvc.py',
             # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
 
-            """
-            dataset:kaist   backbone:r50    
-            """
-            # '../../configs/kaist/mul_faster_rcnn_r50_c4_add_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_c4_cat_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
+            # dataset:kaist   backbone:r50
+            '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
+            '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
+            '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
+            '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
+            '../../configs/kaist/mul_faster_rcnn_r50_c4_add_kaist.py',
+            '../../configs/kaist/mul_faster_rcnn_r50_c4_cat_kaist.py',
 
-            """
-            dataset:kaist   backbone:v16    
-            """
+
+            # dataset:kaist   backbone:v16
+
         ]
 
     for config in configs:
@@ -76,6 +73,7 @@ def main():
         train_dataset = obj_from_dict(cfg.data.train, datasets)
         # print(train_dataset.img_infos)       # debug
 
+        t0 = time.time()        # the start training time
         # 3.train a detector
         train_detector(
             model,
@@ -85,8 +83,10 @@ def main():
             validate=True,
             logger=logger
         )
-        t1 = time.time()
+        t1 = time.time()        # the end training time
         logger.info("Total training time: {}m".format((t1-t0) // 60))
+        logger.info("Total training time: {}minutes - {}hours".format((t1 - t0) // 60,
+                                                                      (t1 - t0) // 3600))
 
 
 if __name__ == '__main__':
