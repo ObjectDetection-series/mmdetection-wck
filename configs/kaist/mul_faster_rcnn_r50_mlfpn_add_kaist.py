@@ -115,8 +115,8 @@ test_cfg = dict(
 
 # dataset settings
 dataset_type = 'KaistDataset'
-data_root = '/media/ser248/3rd/WangCK/Data/datasets/kaist-rgbt/'
-# data_root = '/home/wangck/WangCK/Data/datasets/kaist-rgbt/'
+# data_root = '/media/ser248/3rd/WangCK/Data/datasets/kaist-rgbt/'
+data_root = '/home/wangck/WangCK/Data/datasets/kaist-rgbt/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 img_norm_cfg_t = dict(
@@ -217,16 +217,16 @@ data = dict(
 #         test_mode=True))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.002, momentum=0.9, weight_decay=0.0005)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 
 # learning policy
 lr_config = dict(
     policy='step',
-    # warmup='linear',
-    # warmup_iters=2000,
-    # warmup_ratio=1.0 / 3,
-    step=[4, 8])
+    warmup='linear',
+    warmup_iters=500,
+    warmup_ratio=1.0 / 3,
+    step=[18, 24, 30])
 checkpoint_config = dict(interval=4)
 
 # yapf:disable
@@ -239,11 +239,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 100       # kai: 25 -> 100
+total_epochs = 32       # kai: 25 -> 100 -> 32
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_mlfpn_add_kaist'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_faster_rcnn_r50_mlfpn_add_kaist'
+# work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_mlfpn_add_kaist'
+work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_faster_rcnn_r50_mlfpn_add_kaist'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
