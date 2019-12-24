@@ -14,8 +14,8 @@ mul = 0;
 show = 0;
 lims = [3.1e-3 1e1 .05 1];
 ref = 10.^(-2:.25:0);
-% dataDir = ['/media/',getenv('USER'),'/3rd/WangCK/Data/datasets/kaist-rgbt'];
-dataDir = ['/home/',getenv('USER'),'/WangCK/Data/datasets/kaist-rgbt'];
+dataDir = ['/media/',getenv('USER'),'/3rd/WangCK/Data/datasets/kaist-rgbt'];
+% dataDir = ['/home/',getenv('USER'),'/WangCK/Data/datasets/kaist-rgbt'];
 gtDir = [dataDir,'/annotations'];
 dtDir = [dataDir,'/res'];
 subset =[dataDir,'/imageSets/test-all-20.txt'];
@@ -34,8 +34,8 @@ miss=exp(mean(log(max(1e-10,1-miss))));
 roc=[score fp tp];
 fprintf('\nlog-average miss rate = %.2f%%\n',miss*100);
 
-% fid = fopen(['/media/',getenv('USER'),'/3rd/WangCK/Data/temp/temp.txt'],'r');
-fid = fopen(['/home/',getenv('USER'),'/WangCK/Data/temp/temp.txt'],'r');
+fid = fopen(['/media/',getenv('USER'),'/3rd/WangCK/Data/temp/temp.txt'],'r');
+% fid = fopen(['/home/',getenv('USER'),'/WangCK/Data/temp/temp.txt'],'r');
 str = fgets(fid);
 fclose(fid);
 

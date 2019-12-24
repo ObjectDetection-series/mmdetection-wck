@@ -65,8 +65,8 @@ train_cfg = dict(
         assigner=dict(
             type='MaxIoUAssigner',
             pos_iou_thr=0.5,
-            neg_iou_thr=0.3,
-            min_pos_iou=0.3,
+            neg_iou_thr=0.5,
+            min_pos_iou=0.,
             ignore_iof_thr=-1),
         sampler=dict(
             type='RandomSampler',
@@ -217,8 +217,9 @@ data = dict(
 #         test_mode=True))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.002, momentum=0.9, weight_decay=0.0005)
-optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
+optimizer = dict(type='SGD', lr=0.004, momentum=0.9, weight_decay=5e-4)
+# optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
+optimizer_config = dict()
 
 # learning policy
 lr_config = dict(
@@ -231,7 +232,7 @@ checkpoint_config = dict(interval=4)
 
 # yapf:disable
 log_config = dict(
-    interval=1000,
+    interval=100,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
