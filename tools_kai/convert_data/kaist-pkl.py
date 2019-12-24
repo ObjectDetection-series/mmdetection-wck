@@ -16,10 +16,14 @@ Description: This script is used to load the train_annotations and test_annotati
 
 def main():
     username = getpass.getuser()
-    xml_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/annotations-xml/')
-    pkl_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/annotations-pkl/')
-    txt_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/imageSets/')
-    img_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/images/')
+    # xml_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/annotations-xml/')
+    # pkl_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/annotations-pkl/')
+    # txt_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/imageSets/')
+    # img_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/images/')
+    xml_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/annotations-xml/')
+    pkl_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/annotations-pkl/')
+    txt_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/imageSets/')
+    img_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/images/')
     mmcv.mkdir_or_exist(pkl_dir)
 
     # all images
