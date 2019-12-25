@@ -107,15 +107,15 @@ test_cfg = dict(
 
 # dataset settings
 dataset_type = 'KaistDataset'
-data_root = '/media/ser248/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/'
-# data_root = '/home/wangck/WangCK/Data/datasets/kaist_mlfpn-rgbt/'
+# data_root = '/media/ser248/3rd/WangCK/Data/datasets/kaist-rgbt/'
+data_root = '/home/wangck/WangCK/Data/datasets/kaist-rgbt/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 img_norm_cfg_t = dict(
     mean=[123.675, 123.675, 123.675], std=[58.395, 58.395, 58.395], to_rgb=False)
 data = dict(
-    imgs_per_gpu=4,
-    workers_per_gpu=4,
+    imgs_per_gpu=2,
+    workers_per_gpu=2,
     train=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/train-all.pkl',
@@ -175,11 +175,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 25
+total_epochs = 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist'
+# work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist'
+work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist'
 load_from = None
-resume_from = None
+resume_from = '/home/wangck/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist/latest.pth'
 workflow = [('train', 1)]
