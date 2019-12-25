@@ -99,18 +99,18 @@ class TUM(nn.Module):
                  is_smooth=True,
                  side_channel=512,
                  scales=6,
-                 ssd_style_tum=True):
+                 ssd_style_tum=True):   # This param is added by coder
         super(TUM, self).__init__()
         self.is_smooth = is_smooth
         self.side_channel = side_channel
         self.input_planes = input_planes
-        self.planes = 2 * self.input_planes
+        self.planes = 2 * self.input_planes     # important
         self.first_level = first_level
         self.scales = scales
         if first_level:
-            self.in1 = input_planes
+            self.in1 = input_planes             # 128
         else:
-            self.in1 = input_planes + side_channel
+            self.in1 = input_planes + side_channel      # 128 + 512
         self.layers = nn.Sequential()
         self.layers.add_module('{}'.format(len(self.layers)),
                                BasicConv(self.in1, self.planes, 3, 2, 1))
@@ -176,6 +176,36 @@ class TUM(nn.Module):
         return deconved_feat
 
 
+class SFAM(nn.Module):
+    def __init__(self, planes, num_levels, num_scales, compress_ratio=16):
+        super(SFAM, self).__init__()
+        self.planes = planes
+        self.num_levels = num_levels
+        self.num_scales = num_scales
+        self.compress_ratio = compress_ratio
+
+        self.fc1 = nn.ModuleList([nn.Conv2d(self.planes * self.num_levels,
+                                            self.planes * self.num_levels // 16,
+                                            1, 1, 0)] * self.num_scales)
+        self.relu = nn.ReLU(inplace=True)
+        self.fc2 = nn.ModuleList([nn.Conv2d(self.planes * self.num_levels // 16,
+                                            self.planes * self.num_levels,
+                                            1, 1, 0)] * self.num_scales)
+        self.sigmoid = nn.Sigmoid()
+        self.avgpool = nn.AdaptiveAvgPool2d(1)
+
+    def forward(self, x):
+        attention_feat = []
+        for i, _mf in enumerate(x):
+            _tmp_f = self.avgpool(_mf)
+            _tmp_f = self.fc1[i](_tmp_f)
+            _tmp_f = self.relu(_tmp_f)
+            _tmp_f = self.fc2[i](_tmp_f)
+            _tmp_f = self.sigmoid(_tmp_f)
+            attention_feat.append(_mf*_tmp_f)
+        return attention_feat
+
+
 dim_conv = [256, 512, 1024, 2048]   # 对应Resnet50每个stage的out-chs？
 
 
@@ -185,6 +215,16 @@ class MLFPN(nn.Module):
     Args:
         backbone_choice: 'ResNet' or 'VGG'. About VGG, it need to be designed by me.
         scale_outs_num: each TUM will output features with scales.
+        scale_outs_num: the num of scale obtained by each TUM
+        tum_num: the num of TUM module:
+        smooth: the param is used in TUM
+        base_feature_size: ?
+        base_choice: [int], 表示使用backbone几个stage的feature
+        base_list: [list], 表示使用backbone哪几个stage的feature,从1计数
+        norm: [bool], used in SFAM
+        ssd_style_tum: [bool], ?
+        out_indices: [list], add by kai
+        sfam: [bool], whether to use sfam module
     """
 
     def __init__(
@@ -200,7 +240,8 @@ class MLFPN(nn.Module):
             base_list,              # base_list=[2, 3]
             norm,
             ssd_style_tum=True,
-            out_indices=None
+            out_indices=None,       # kai add the param
+            sfam=True               # kai add the param
     ):
         super(MLFPN, self).__init__()
         # print(type(base_list))
@@ -216,11 +257,14 @@ class MLFPN(nn.Module):
         self.norm = norm
         self.backbone_choice = backbone_choice
         self.ssd_style_tum = ssd_style_tum
-        self.out_indices=out_indices        # kai add the line
+        self.out_indices = out_indices
+        self.sfam = sfam
         # print(self.base_list[1])
+
         if base_choice == 1:
             self.dim = dim_conv[self.base_list[0]]
         else:
+            # construct base features
             if self.backbone_choice == 'ResNet':
                 self.shallow_in = dim_conv[self.base_list[0] - 1]   # 512
                 self.deep_in = dim_conv[self.base_list[1] - 1]      # 1024
@@ -231,15 +275,18 @@ class MLFPN(nn.Module):
                 self.deep_in = in_channels[1]
                 self.shallow_out = 256
                 self.deep_out = 512
+
             self.reduce = BasicConv(
-                self.shallow_in,
-                self.shallow_out,
+                self.shallow_in,    # 512
+                self.shallow_out,   # 256
                 kernel_size=3,
                 stride=1,
                 padding=1)
-            self.up_reduce = BasicConv(
+            self.up_reduce = BasicConv(     # 1024 -> 512
                 self.deep_in, self.deep_out, kernel_size=1, stride=1)
 
+            # construct others
+            self.Norm = nn.BatchNorm2d(256 * 4)     # 8?
             self.leach = nn.ModuleList([
                 BasicConv(
                     self.deep_out + self.shallow_out,   # 768
@@ -248,6 +295,7 @@ class MLFPN(nn.Module):
                     stride=(1, 1))
             ] * self.num_levels)
 
+        # construct tums
         for i in range(self.num_levels):
             if i == 0:
                 setattr(
@@ -267,6 +315,10 @@ class MLFPN(nn.Module):
                         scales=self.num_scales,
                         side_channel=self.planes,
                         ssd_style_tum=self.ssd_style_tum))
+
+        # construct SFAM module
+        if self.sfam:
+            self.sfam_module = SFAM(self.planes, self.num_levels, self.num_scales, compress_ratio=16)
 
     def init_weights(self):
         for key in self.state_dict():
@@ -328,6 +380,11 @@ class MLFPN(nn.Module):
                 for i in range(self.num_scales, 0, -1)
             ]               # 使用双重for循环concat不同level, 相同scale的feature maps
             output = []     # the dim of output=num_scales=scale_outs_num
+
+            # forward_sfam
+            if self.sfam:
+                sources = self.sfam_module(sources)
+            sources[0] = self.Norm(sources[0])
 
             for i in range(0, self.num_scales, 1):
                 output.append(sources[i])        # use 4,8,16,32,64

@@ -38,7 +38,6 @@ class BaseDetectorMul(nn.Module):
         return hasattr(self, 'bbox_head') and self.bbox_head is not None
 
     @property
-
     def with_mask(self):
         return hasattr(self, 'mask_head') and self.mask_head is not None
 

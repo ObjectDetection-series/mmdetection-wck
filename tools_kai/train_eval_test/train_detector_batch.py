@@ -27,20 +27,21 @@ def main():
             # '../../configs/cvc09/faster_rcnn_v16_c5_cvc.py',
             # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
 
-            # Author:YY     dataset:kaist       backbone:r50
+            # Author:WangCK  dataset:kaist_[backbone:r50 + neck:FPN]
             # '../../configs/kaist_fpn/mul_faster_rcnn_r50_fpn_add_kaist.py',
 
-            # Author:WangCK     dataset:kaist       backbone:r50
-            '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_c4_add_kaist.py',
-            # '../../configs/kaist/mul_faster_rcnn_r50_c4_cat_kaist.py',
+            # Author:WangCK  dataset:kaist_[backbone:r50 + neck:MLFPN]
+            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
+            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
+            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
+            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
+            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_add_kaist.py',
+            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_cat_kaist.py',
 
+            # Author:WangCK  dataset:kaist_[backbone:r50 + neck:BFP]
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist.py',
 
-            # dataset:kaist   backbone:v16
-
+            # Author:WangCK  dataset:kaist_[backbone:v16 + neck:BFP]
         ]
 
     for config in configs:

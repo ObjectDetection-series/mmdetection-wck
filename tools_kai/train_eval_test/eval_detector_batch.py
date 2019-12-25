@@ -16,7 +16,7 @@ import getpass
 Author: WangCK
 Date: 2019.12.12
 Description: This script is used to eval pre-trained detectors.
-Add eval_detector_batch.py. It is used to eval pre-trained detectors.
+             Add eval_detector_batch.py. It is used to eval pre-trained detectors.
 """
 
 
@@ -71,16 +71,16 @@ def main():
         # '../../configs/cvc09/faster_rcnn_v16_c5_cvc.py',
         # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
 
-        # Author:YY     dataset:kaist       backbone:r50
+        # Author:YY     dataset:kaist_mlfpn       backbone:r50
         '../../configs/kaist_fpn/mul_faster_rcnn_r50_fpn_add_kaist.py',
 
-        # Author:WangCK     dataset:kaist       backbone:r50
-        # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
-        # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
-        # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
-        # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
-        # '../../configs/kaist/mul_faster_rcnn_r50_c4_add_kaist.py',
-        # '../../configs/kaist/mul_faster_rcnn_r50_c4_cat_kaist.py',
+        # Author:WangCK     dataset:kaist_mlfpn       backbone:r50
+        # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
+        # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
+        # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
+        # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
+        # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_add_kaist.py',
+        # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_cat_kaist.py',
     ]
     for config in configs:
         # load dataset
@@ -99,7 +99,7 @@ def main():
 
         dataset = obj_from_dict(cfg.data.val, datasets, dict(test_mode=True))
         # load model
-        checkpoint_file = osp.join(cfg.work_dir, 'epoch_1.pth')
+        checkpoint_file = osp.join(cfg.work_dir, 'epoch_3.pth')
         model = build_detector(
             cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
         load_checkpoint(model, checkpoint_file)
@@ -118,7 +118,7 @@ def main():
         outputs = single_test(model, data_loader, False)
         if 'caltech' in config:
             eval_caltech_mr()
-        if 'kaist' in config:
+        if 'kaist_mlfpn' in config:
             eval_kaist_mr()
         if 'cvc' in config:
             eval_cvc_mr()

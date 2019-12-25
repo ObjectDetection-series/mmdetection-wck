@@ -76,7 +76,7 @@ class CoCoData(object):
 
         self.info['year'] = 2015
         self.info['version'] = 'v1.0'
-        self.info['description'] = 'kaist dataset with coco format'
+        self.info['description'] = 'kaist_mlfpn dataset with coco format'
         self.info['url'] = 'https://github.com/SoonminHwang/rgbt-ped-detection'
         self.info['date_created'] = '2015 CVPR'
 
@@ -119,7 +119,7 @@ class CoCoData(object):
             assert occlusion <= 2 and occlusion >= 0
             # visibility ratio
             vis_ratio = float(obj.find('vis_ratio').text)  # for caltech dataset
-            # vis_ratio = float(2-occlusion)   # for kaist dataset
+            # vis_ratio = float(2-occlusion)   # for kaist_mlfpn dataset
             # 'Reasonable' subset
             if name == 'person':
                 self.annotations.append(create_annotation(

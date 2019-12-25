@@ -117,8 +117,8 @@ test_cfg = dict(
 
 # dataset settings
 dataset_type = 'KaistDataset'
-data_root = '/media/ser248/3rd/WangCK/Data/datasets/kaist-rgbt/'
-# data_root = '/home/wangck/WangCK/Data/datasets/kaist-rgbt/'
+data_root = '/media/ser248/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/'
+# data_root = '/home/wangck/WangCK/Data/datasets/kaist_mlfpn-rgbt/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 img_norm_cfg_t = dict(

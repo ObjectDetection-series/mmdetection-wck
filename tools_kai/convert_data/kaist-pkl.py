@@ -9,21 +9,21 @@ import getpass
 """
 Author:WangCk
 Date:2019.12.3
-Description: This script is used to load the train_annotations and test_annotations of kaist dataset
+Description: This script is used to load the train_annotations and test_annotations of kaist_mlfpn dataset
              to specified pkl file.
 """
 
 
 def main():
     username = getpass.getuser()
-    # xml_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/annotations-xml/')
-    # pkl_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/annotations-pkl/')
-    # txt_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/imageSets/')
-    # img_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist-rgbt/images/')
-    xml_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/annotations-xml/')
-    pkl_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/annotations-pkl/')
-    txt_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/imageSets/')
-    img_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/images/')
+    # xml_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist_mlfpn-rgbt/annotations-xml/')
+    # pkl_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist_mlfpn-rgbt/annotations-pkl/')
+    # txt_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist_mlfpn-rgbt/imageSets/')
+    # img_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist_mlfpn-rgbt/images/')
+    xml_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/annotations-xml/')
+    pkl_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/annotations-pkl/')
+    txt_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/imageSets/')
+    img_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/images/')
     mmcv.mkdir_or_exist(pkl_dir)
 
     # all images
