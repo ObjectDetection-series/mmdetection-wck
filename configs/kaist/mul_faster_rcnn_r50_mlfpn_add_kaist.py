@@ -48,11 +48,11 @@ model = dict(
         type='SharedFCBBoxHead',
         num_fcs=2,
         in_channels=1024,            # kai: 256 -> 512 -> 1024
-        fc_out_channels=256,
-        roi_feat_size=7,
-        num_classes=2,  # background and pederstrian
-        target_means=[0., 0., 0., 0.],
-        target_stds=[0.1, 0.1, 0.2, 0.2],
+        fc_out_channels=1024,        # kai: ---------- ->(256, 1024)
+        roi_feat_size=7,             # ROI特征层尺寸
+        num_classes=2,               # 类别数: background + pederstrian
+        target_means=[0., 0., 0., 0.],      # 均值
+        target_stds=[0.1, 0.1, 0.2, 0.2],   # 方差
         reg_class_agnostic=True,
         loss_cls=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
@@ -64,8 +64,8 @@ train_cfg = dict(
         assigner=dict(
             type='MaxIoUAssigner',
             pos_iou_thr=0.5,
-            neg_iou_thr=0.5,
-            min_pos_iou=0.,
+            neg_iou_thr=0.3,
+            min_pos_iou=0.3,
             ignore_iof_thr=-1),
         sampler=dict(
             type='RandomSampler',
@@ -73,8 +73,8 @@ train_cfg = dict(
             pos_fraction=0.25,
             neg_pos_ub=-1,
             add_gt_as_proposals=False,
-            pos_balance_sampling=False,
-            neg_balance_thr=0),         # kai: this param maybe raise problem
+            pos_balance_sampling=False,     # 下一次训练时，注释掉
+            neg_balance_thr=0),             # 下一次训练时，注释掉
         allowed_border=0,
         pos_weight=-1,
         smoothl1_beta=1.0,              # kai: this param maybe raise problem
@@ -122,7 +122,7 @@ img_norm_cfg_t = dict(
     mean=[123.675, 123.675, 123.675], std=[58.395, 58.395, 58.395], to_rgb=False)
 data = dict(
     imgs_per_gpu=2,
-    workers_per_gpu=2,
+    workers_per_gpu=4,
     train=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/train-all.pkl',
@@ -216,22 +216,22 @@ data = dict(
 #         test_mode=True))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.004, momentum=0.9, weight_decay=5e-4)
-# optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
-optimizer_config = dict()
+optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=5e-4)
+optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
+# optimizer_config = dict()
 
 # learning policy
 lr_config = dict(
     policy='step',
-    warmup='linear',
-    warmup_iters=500,
-    warmup_ratio=1.0 / 3,
-    step=[18, 24, 30])
-checkpoint_config = dict(interval=4)
+    # warmup='linear',
+    # warmup_iters=500,
+    # warmup_ratio=1.0 / 3,
+    step=[4, 8])
+checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=100,
+    interval=25,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -242,7 +242,7 @@ log_config = dict(
 total_epochs = 32       # kai: 25 -> 100 -> 32
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_mlfpn_add_kaist'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_mlfpn_add_kaist_2'
 # work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_faster_rcnn_r50_mlfpn_add_kaist'
 load_from = None
 resume_from = None

@@ -105,8 +105,8 @@ test_cfg = dict(
 
 # dataset settings
 dataset_type = 'KaistDataset'
-# data_root = '/media/ser248/3rd/WangCK/Data/datasets/kaist-rgbt/'
-data_root = '/home/wangck/WangCK/Data/datasets/kaist-rgbt/'
+data_root = '/media/ser248/3rd/WangCK/Data/datasets/kaist-rgbt/'
+# data_root = '/home/wangck/WangCK/Data/datasets/kaist-rgbt/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 img_norm_cfg_t = dict(
@@ -176,8 +176,8 @@ log_config = dict(
 total_epochs = 25
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-# work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_mlfpn_add_kaist'
-work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

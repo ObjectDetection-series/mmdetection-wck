@@ -28,10 +28,10 @@ def main():
             # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
 
             # Author:YY     dataset:kaist       backbone:r50
-            '../../configs/kaist_fpn/mul_faster_rcnn_r50_fpn_add_kaist.py',
+            # '../../configs/kaist_fpn/mul_faster_rcnn_r50_fpn_add_kaist.py',
 
             # Author:WangCK     dataset:kaist       backbone:r50
-            # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
+            '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
             # '../../configs/kaist/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
             # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
             # '../../configs/kaist/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
@@ -56,11 +56,11 @@ def main():
                 mmdet_version=__version__, config=cfg.text)
 
         username = getpass.getuser()
-        temp_file = '/home/' + username + '/WangCK/Data/temp/temp.txt'
-        # temp_file = '/media/' + username + '/3rd/WangCK/Data/temp/temp.txt'
+        # temp_file = '/home/' + username + '/WangCK/Data/temp/temp.txt'
+        temp_file = '/media/' + username + '/3rd/WangCK/Data/temp/temp.txt'
         fo = open(temp_file, 'w+')
-        # str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
-        str_write = cfg.work_dir.replace('../..', ('/home/' + username + '/WangCK/Data'))
+        str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
+        # str_write = cfg.work_dir.replace('../..', ('/home/' + username + '/WangCK/Data'))
         fo.write(str_write)
         fo.close()
 
