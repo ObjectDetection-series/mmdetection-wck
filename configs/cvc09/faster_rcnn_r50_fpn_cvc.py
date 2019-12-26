@@ -19,10 +19,10 @@ model = dict(
         type='RPNHead',                         # RPN网络类型
         in_channels=256,                        # RPN网络的输入通道数
         feat_channels=128,                      # 特征层的通道数
-        anchor_scales=[8, 10, 12, 14],          # 生成的anchor的baselen，baselen = sqrt(w*h)，w和h为anchor的宽和高
-        anchor_ratios=[1.0 / 0.5, 1.0],         # anchor的宽高比
+        anchor_scales=[8, 10, 12, 14],          # 锚定框尺度S，S = sqrt(w*h)，w和h为anchor的宽和高
+        anchor_ratios=[1.0 / 0.5, 1.0],         # 锚定框宽高比aspect ratio
         anchor_strides=[4, 8, 16, 32],          # 在每个特征层上的anchor的步长（对应于原图）
-        anchor_base_sizes=[4, 8, 16, 32],
+        anchor_base_sizes=[4, 8, 16, 32],       # 锚定框基本尺寸B
         target_means=[.0, .0, .0, .0],          # 均值
         target_stds=[1.0, 1.0, 1.0, 1.0],       # 方差
         # use_sigmoid_cls=True),

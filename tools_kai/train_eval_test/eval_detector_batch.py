@@ -72,7 +72,7 @@ def main():
         # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
 
         # Author:YY     dataset:kaist_mlfpn       backbone:r50
-        '../../configs/kaist_fpn/mul_faster_rcnn_r50_fpn_add_kaist.py',
+        # '../../configs/kaist_fpn/mul_faster_rcnn_r50_fpn_add_kaist.py',
 
         # Author:WangCK     dataset:kaist_mlfpn       backbone:r50
         # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
@@ -81,6 +81,12 @@ def main():
         # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
         # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_add_kaist.py',
         # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_cat_kaist.py',
+
+        # Author:WangCK  dataset:kaist_[backbone:r50 + neck:BFP]
+        # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_YY.py',
+        '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_1.py'
+
+        # Author:WangCK  dataset:kaist_[backbone:v16 + neck:BFP]
     ]
     for config in configs:
         # load dataset
@@ -92,14 +98,14 @@ def main():
         # temp_file = '/home/' + username + '/WangCK/Data/temp/temp.txt'
         temp_file = '/media/' + username + '/3rd/WangCK/Data/temp/temp.txt'
         fo = open(temp_file, 'w+')
-        str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
         # str_write = cfg.work_dir.replace('../..', ('/home/' + username + '/WangCK/Data'))
+        str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
         fo.write(str_write)
         fo.close()
 
         dataset = obj_from_dict(cfg.data.val, datasets, dict(test_mode=True))
         # load model
-        checkpoint_file = osp.join(cfg.work_dir, 'epoch_3.pth')
+        checkpoint_file = osp.join(cfg.work_dir, 'epoch_26.pth')
         model = build_detector(
             cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
         load_checkpoint(model, checkpoint_file)
@@ -115,10 +121,10 @@ def main():
             shuffle=False)
 
         # eval outputs
-        outputs = single_test(model, data_loader, False)
+        outputs = single_test(model, data_loader, True)
         if 'caltech' in config:
             eval_caltech_mr()
-        if 'kaist_mlfpn' in config:
+        if 'kaist' in config:
             eval_kaist_mr()
         if 'cvc' in config:
             eval_cvc_mr()

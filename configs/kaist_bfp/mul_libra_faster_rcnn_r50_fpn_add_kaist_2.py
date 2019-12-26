@@ -215,16 +215,16 @@ data = dict(
 #         pipeline=test_pipeline))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 
 # learning policy
 lr_config = dict(
     policy='step',
-    warmup='linear',
-    warmup_iters=500,
-    warmup_ratio=1.0 / 3,
-    step=[8, 11])
+    # warmup='linear',
+    # warmup_iters=500,
+    # warmup_ratio=1.0 / 3,
+    step=[4, 8])
 checkpoint_config = dict(interval=1)
 # yapf:disable
 
@@ -237,10 +237,10 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 30       # 12 -> 30
+total_epochs = 20       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_1'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
 # work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
 load_from = None
 resume_from = None

@@ -530,9 +530,7 @@ for d=1:m, dir1=dirs{d}; dir1(dir1=='\')=sep; dir1(dir1=='/')=sep;
   if(dir1(end)==sep), dir1(end)=[]; end; dirs{d}=dir1; end
 
 % Read subset file
-fp=fopen(subset, 'r'); 
-info=textscan(fp, '%s%s%s', 'Delimiter', '/');      
-fclose(fp);
+fp=fopen(subset, 'r'); info=textscan(fp, '%s%s%s', 'Delimiter', '/');  fclose(fp);
 
 [fs1,fs0] = getFiles0(dirs{1}, info, inputTypes{1}, f0, f1);
 n1=length(fs0); fs=cell(m,n1); fs(1,:)=fs1;
@@ -549,7 +547,6 @@ for d=2:m, fs(d,:)=getFiles0(dirs{d}, info, inputTypes{1}, f0, f1); end
     %     n=length(fs0); for i=1:n, f=fs0{i};
     %       f(find(f=='.',1,'first'):end)=[]; fs0{i}=f; end
     if isempty(inputType), ext = '.txt'; else ext ='.jpg';    end
-    % ext = '';   % kai add the line for debug
     
     fs0=info{3}(f0:min(f1,end));
     if isempty(info{3}{1})
@@ -561,18 +558,18 @@ for d=2:m, fs(d,:)=getFiles0(dirs{d}, info, inputTypes{1}, f0, f1); end
     end
 end
 
-  function fs1 = getFiles1( dir1, fs0, sep )
-    % get fs1 in dir1 corresponding to fs0
-    n=length(fs0); fs1=cell(1,n); i2=0; i1=0;
-    fs2=dir(dir1); fs2={fs2.name}; n2=length(fs2);
-    eMsg='''%s'' has no corresponding file in %s.';
-    for i0=1:n, r=length(fs0{i0}); match=0;
-      while(i2<n2), i2=i2+1; if(strcmpi(fs0{i0},fs2{i2}(1:min(end,r))))
-          i1=i1+1; fs1{i1}=fs2{i2}; match=1; break; end; end
-      if(~match), error(eMsg,fs0{i0},dir1); end
-    end
-    for i1=1:n, fs1{i1}=[dir1 sep fs1{i1}]; end
-  end
+%   function fs1 = getFiles1( dir1, fs0, sep )
+%     % get fs1 in dir1 corresponding to fs0
+%     n=length(fs0); fs1=cell(1,n); i2=0; i1=0;
+%     fs2=dir(dir1); fs2={fs2.name}; n2=length(fs2);
+%     eMsg='''%s'' has no corresponding file in %s.';
+%     for i0=1:n, r=length(fs0{i0}); match=0;
+%       while(i2<n2), i2=i2+1; if(strcmpi(fs0{i0},fs2{i2}(1:min(end,r))))
+%           i1=i1+1; fs1{i1}=fs2{i2}; match=1; break; end; end
+%       if(~match), error(eMsg,fs0{i0},dir1); end
+%     end
+%     for i1=1:n, fs1{i1}=[dir1 sep fs1{i1}]; end
+%   end
 end
 
 function fs = copyFiles( fs, dirs )
@@ -639,32 +636,21 @@ function [gt0,dt0] = loadAll( gtDir, dtDir, pLoad, subset )
 if(nargin<2), dtDir=[]; end
 if(nargin<3), pLoad={}; end
 
-% kai: the following section is important
 if(isempty(dtDir))
     fs=getSubsetFiles( {gtDir}, subset, {''} ); 
     gtFs=fs(1,:); 
 else
   dtFile=length(dtDir)>4 && strcmp(dtDir(end-3:end),'.txt');
-  if(dtFile), dirs={gtDir}; 
-  else dirs={gtDir,dtDir}; 
-  end
-  fs=getSubsetFiles(dirs, subset, {''}); 
-  gtFs=fs(1,:);
-  if(dtFile), dtFs=dtDir; 
-  else dtFs=fs(2,:); 
-  end
+  if(dtFile), dirs={gtDir}; else dirs={gtDir,dtDir}; end
+  fs=getSubsetFiles(dirs, subset, {''}); gtFs=fs(1,:);
+  if(dtFile), dtFs=dtDir; else dtFs=fs(2,:); end
 end
 
 % if(isempty(dtDir)), fs=getFiles({gtDir}); gtFs=fs(1,:); else
 %   dtFile=length(dtDir)>4 && strcmp(dtDir(end-3:end),'.txt');
-%   if(dtFile), dirs={gtDir}; 
-%   else dirs={gtDir,dtDir}; 
-%   end
-%   fs=getFiles(dirs); 
-%   gtFs=fs(1,:);
-%   if(dtFile), dtFs=dtDir; 
-%   else dtFs=fs(2,:); 
-%   end
+%   if(dtFile), dirs={gtDir}; else dirs={gtDir,dtDir}; end
+%   fs=getFiles(dirs); gtFs=fs(1,:);
+%   if(dtFile), dtFs=dtDir; else dtFs=fs(2,:); end
 % end
 
 % load ground truth
