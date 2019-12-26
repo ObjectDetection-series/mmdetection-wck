@@ -27,7 +27,9 @@ def main():
             # '../../configs/cvc09/faster_rcnn_v16_c5_cvc.py',
             # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
 
-            # Author:WangCK  dataset:kaist_[backbone:r50 + neck:FPN]
+            """
+            Author:WangCK  dataset:kaist_[backbone:r50 + neck:FPN]
+            """
             # '../../configs/kaist_fpn/mul_faster_rcnn_r50_fpn_add_kaist.py',
 
             # Author:WangCK  dataset:kaist_[backbone:r50 + neck:MLFPN]
@@ -38,10 +40,22 @@ def main():
             # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_add_kaist.py',
             # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_cat_kaist.py',
 
-            # Author:WangCK  dataset:kaist_[backbone:r50 + neck:BFP]
+            """
+            Author:WangCK  dataset:kaist_[backbone:r50 + neck:BFP]
+            """
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_YY.py',
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_1.py',
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py'
+
+            # 使用下面的配置文件进行调参
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py'
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_3.py'
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py'
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_5.py'
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_6.py'
+            
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist.py'
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py'
 
             # Author:WangCK  dataset:kaist_[backbone:v16 + neck:BFP]
         ]

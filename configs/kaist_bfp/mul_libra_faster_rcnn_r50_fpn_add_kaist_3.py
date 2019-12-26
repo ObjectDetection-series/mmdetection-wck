@@ -1,3 +1,8 @@
+"""
+fine-tune了以下参数：
+    reg_class_agnostic=False  => reg_class_agnostic=True
+"""
+
 # model settings
 model = dict(
     type='FasterRCNNMulFPNAdd',
@@ -48,7 +53,7 @@ model = dict(
         num_classes=2,      # background and pederstrian
         target_means=[0., 0., 0., 0.],
         target_stds=[0.1, 0.1, 0.2, 0.2],
-        reg_class_agnostic=False,       # fine-tune: True or False
+        reg_class_agnostic=True,       # fine-tune: True or False
         loss_cls=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
         loss_bbox=dict(
@@ -229,7 +234,7 @@ checkpoint_config = dict(interval=1)
 # yapf:disable
 
 log_config = dict(
-    interval=20,
+    interval=100,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -237,11 +242,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 20       # 12 -> 30
+total_epochs = 2       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_3'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist_3'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

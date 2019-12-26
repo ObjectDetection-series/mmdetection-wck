@@ -1,6 +1,6 @@
 # model settings
 model = dict(
-    type='FasterRCNNMulFPNAdd',
+    type='FasterRCNNMulFPNCat',
     pretrained='torchvision://resnet50',
     backbone=dict(
         type='MulResnet',
@@ -48,7 +48,7 @@ model = dict(
         num_classes=2,      # background and pederstrian
         target_means=[0., 0., 0., 0.],
         target_stds=[0.1, 0.1, 0.2, 0.2],
-        reg_class_agnostic=False,       # fine-tune: True or False
+        reg_class_agnostic=False,
         loss_cls=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
         loss_bbox=dict(
@@ -68,17 +68,17 @@ train_cfg = dict(
             min_pos_iou=0.3,
             ignore_iof_thr=-1),
         sampler=dict(
-            type='RandomSampler',              # YY    Libra
-            num=120,                # fine-tune: 120,  256
-            pos_fraction=0.25,      # fine-tune: 0.25  0.5
-            neg_pos_ub=5,           # fine-tune: -1    5
+            type='RandomSampler',
+            num=120,
+            pos_fraction=0.25,
+            neg_pos_ub=5,
             add_gt_as_proposals=False),
         allowed_border=-1,
         pos_weight=-1,
         debug=False,
         nms=dict(
             nms_across_levels=False,
-            nms_pre=2000,           # fine-tune: 2000,  20000
+            nms_pre=2000,
             nms_post=2000,
             max_num=2000,
             nms_thr=0.7,
@@ -113,13 +113,13 @@ train_cfg = dict(
 test_cfg = dict(
     rpn=dict(
         nms_across_levels=False,
-        nms_pre=1000,               # fine-tune: 10000,  1000
-        nms_post=1000,              # fine-tune: 10000,  1000
-        max_num=1000,               # fine-tune: 300,    1000
+        nms_pre=1000,
+        nms_post=1000,
+        max_num=1000,
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100)     # fine-tune: 40,   100
+        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100)
     # soft-nms is also supported for rcnn testing
     # e.g., nms=dict(type='soft_nms', iou_thr=0.5, min_score=0.05)
 )
@@ -133,8 +133,8 @@ img_norm_cfg = dict(
 img_norm_cfg_t = dict(
     mean=[123.675, 123.675, 123.675], std=[58.395, 58.395, 58.395], to_rgb=False)
 data = dict(
-    imgs_per_gpu=4,         # 4 -> 2
-    workers_per_gpu=4,      # 4 -> 2
+    imgs_per_gpu=2,         # 4 -> 2
+    workers_per_gpu=2,      # 4 -> 2
     train=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/train-all.pkl',
@@ -240,8 +240,8 @@ log_config = dict(
 total_epochs = 20       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_cat_kaist'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_cat_kaist'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

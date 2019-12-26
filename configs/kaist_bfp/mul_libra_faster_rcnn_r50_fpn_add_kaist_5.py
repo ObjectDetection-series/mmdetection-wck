@@ -1,3 +1,15 @@
+"""
+fine-tune了以下参数：
+    nms=dict(
+    nms_across_levels=False,
+    nms_pre=20000,           # fine-tune: 2000,  20000
+    min_bbox_size=0)),
+=>
+    nms=dict(
+    nms_across_levels=False,
+    nms_pre=2000,           # fine-tune: 2000,  20000
+    min_bbox_size=0)),
+"""
 # model settings
 model = dict(
     type='FasterRCNNMulFPNAdd',
@@ -78,7 +90,7 @@ train_cfg = dict(
         debug=False,
         nms=dict(
             nms_across_levels=False,
-            nms_pre=2000,           # fine-tune: 2000,  20000
+            nms_pre=20000,           # fine-tune: 2000,  20000
             nms_post=2000,
             max_num=2000,
             nms_thr=0.7,
@@ -229,7 +241,7 @@ checkpoint_config = dict(interval=1)
 # yapf:disable
 
 log_config = dict(
-    interval=20,
+    interval=100,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -237,10 +249,10 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 20       # 12 -> 30
+total_epochs = 2       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_5'
 # work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
 load_from = None
 resume_from = None

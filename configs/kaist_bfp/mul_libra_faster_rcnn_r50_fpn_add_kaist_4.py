@@ -1,3 +1,20 @@
+"""
+fine-tune了以下参数：
+    sampler=dict(
+            type='RandomSampler',
+            num=128,
+            pos_fraction=0.25,
+            neg_pos_ub=5,
+            add_gt_as_proposals=False),
+    =>
+    sampler=dict(
+            type='RandomSampler',
+            num=256,
+            pos_fraction=0.5,
+            neg_pos_ub=5,
+            add_gt_as_proposals=False),
+"""
+
 # model settings
 model = dict(
     type='FasterRCNNMulFPNAdd',
@@ -69,8 +86,8 @@ train_cfg = dict(
             ignore_iof_thr=-1),
         sampler=dict(
             type='RandomSampler',              # YY    Libra
-            num=120,                # fine-tune: 120,  256
-            pos_fraction=0.25,      # fine-tune: 0.25  0.5
+            num=256,                # fine-tune: 120,  256
+            pos_fraction=0.5,       # fine-tune: 0.25  0.5
             neg_pos_ub=5,           # fine-tune: -1    5
             add_gt_as_proposals=False),
         allowed_border=-1,
@@ -229,7 +246,7 @@ checkpoint_config = dict(interval=1)
 # yapf:disable
 
 log_config = dict(
-    interval=20,
+    interval=100,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -237,10 +254,10 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 20       # 12 -> 30
+total_epochs = 2       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_4'
 # work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
 load_from = None
 resume_from = None
