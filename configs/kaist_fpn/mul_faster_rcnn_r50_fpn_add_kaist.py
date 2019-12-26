@@ -25,10 +25,9 @@ model = dict(
         anchor_base_sizes=[4, 8, 16, 32],       # 基本尺寸
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
-        # use_sigmoid_cls=True
         loss_cls=dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0),
-        loss_bbox=dict(type='SmoothL1Loss', beta=1.0 / 9.0, loss_weight=1.0)),
+        loss_bbox=dict(type='SmoothL1Loss', beta=1.0, loss_weight=1.0)),
     bbox_roi_extractor=dict(
         type='SingleRoIExtractor',
         roi_layer=dict(type='RoIAlign', out_size=7, sample_num=-1),
@@ -67,7 +66,7 @@ train_cfg = dict(
             neg_balance_thr=0),
         allowed_border=0,
         pos_weight=-1,
-        smoothl1_beta=1.0,
+        # smoothl1_beta=1.0,
         debug=False,
         nms=dict(
             nms_across_levels=False,
@@ -120,7 +119,7 @@ data = dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/train-all.pkl',
         img_prefix=data_root + 'images/',
-        img_scale=1.5,      # 缩放因子
+        img_scale=(960, 768),      # 缩放因子 1.5 -> (960, 768)
         img_norm_cfg=img_norm_cfg,
         img_norm_cfg_t=img_norm_cfg_t,
         size_divisor=None,  # 调整因子
@@ -132,7 +131,7 @@ data = dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/test-all.pkl',
         img_prefix=data_root + 'images/',
-        img_scale=1.5,
+        img_scale=(960, 768),
         img_norm_cfg=img_norm_cfg,
         img_norm_cfg_t=img_norm_cfg_t,
         size_divisor=None,
@@ -144,7 +143,7 @@ data = dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/test-all.pkl',
         img_prefix=data_root + 'images/',
-        img_scale=1.5,
+        img_scale=(960, 768),
         img_norm_cfg=img_norm_cfg,
         size_divisor=None,
         flip_ratio=0,
@@ -175,7 +174,7 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 30
+total_epochs = 25
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 # work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_faster_rcnn_r50_fpn_add_kaist'

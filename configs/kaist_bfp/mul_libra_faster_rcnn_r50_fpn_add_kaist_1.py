@@ -29,12 +29,11 @@ model = dict(
         anchor_scales=[8, 10, 12, 14],
         anchor_ratios=[2.0, 1.0],
         anchor_strides=[4, 8, 16, 32],
-        anchor_base_sizes=[4, 8, 16, 32],       # add param 'anchor_base_sizes'
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
         loss_cls=dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0),
-        loss_bbox=dict(type='SmoothL1Loss', beta=1.0, loss_weight=1.0)),
+        loss_bbox=dict(type='SmoothL1Loss', beta=1.0 / 9.0, loss_weight=1.0)),
     bbox_roi_extractor=dict(
         type='SingleRoIExtractor',
         roi_layer=dict(type='RoIAlign', out_size=7, sample_num=2),
@@ -72,7 +71,7 @@ train_cfg = dict(
             type='RandomSampler',
             num=120,
             pos_fraction=0.25,
-            neg_pos_ub=-1,      # change
+            neg_pos_ub=5,
             add_gt_as_proposals=False),
         allowed_border=-1,
         pos_weight=-1,
@@ -81,8 +80,8 @@ train_cfg = dict(
             nms_across_levels=False,
             nms_pre=2000,
             nms_post=2000,
-            max_num=5000,
-            nms_thr=0.9,
+            max_num=2000,
+            nms_thr=0.7,
             min_bbox_size=0)),
     # rpn_proposal=dict(
     #     nms_across_levels=False,
@@ -95,12 +94,12 @@ train_cfg = dict(
         assigner=dict(
             type='MaxIoUAssigner',
             pos_iou_thr=0.5,
-            neg_iou_thr=0.3,
-            min_pos_iou=0.3,
+            neg_iou_thr=0.5,
+            min_pos_iou=0.5,
             ignore_iof_thr=-1),
         sampler=dict(
             type='CombinedSampler',
-            num=64,
+            num=512,
             pos_fraction=0.25,
             add_gt_as_proposals=True,
             pos_sampler=dict(type='InstanceBalancedPosSampler'),
@@ -114,13 +113,13 @@ train_cfg = dict(
 test_cfg = dict(
     rpn=dict(
         nms_across_levels=False,
-        nms_pre=10000,
-        nms_post=10000,
-        max_num=300,
+        nms_pre=1000,
+        nms_post=1000,
+        max_num=1000,
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40)
+        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100)
     # soft-nms is also supported for rcnn testing
     # e.g., nms=dict(type='soft_nms', iou_thr=0.5, min_score=0.05)
 )
@@ -216,19 +215,19 @@ data = dict(
 #         pipeline=test_pipeline))
 
 # optimizer
-optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 
 # learning policy
 lr_config = dict(
     policy='step',
-    # warmup='linear',
-    # warmup_iters=500,
-    # warmup_ratio=1.0 / 3,
-    step=[4, 8])
+    warmup='linear',
+    warmup_iters=500,
+    warmup_ratio=1.0 / 3,
+    step=[8, 11])
 checkpoint_config = dict(interval=1)
-
 # yapf:disable
+
 log_config = dict(
     interval=20,
     hooks=[
@@ -238,11 +237,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 25       # 12 -> 30 ->25
+total_epochs = 30       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
 # work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
 load_from = None
-resume_from = None
+resume_from = '/media/ser248/3rd/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist/latest.pth'
 workflow = [('train', 1)]
