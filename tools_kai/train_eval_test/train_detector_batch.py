@@ -48,10 +48,10 @@ def main():
 
             # 使用下面的配置文件进行调参
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py'
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_3.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_3.py',
             '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py',
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_5.py',
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_6.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_5.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_6.py',
             
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist.py'
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'

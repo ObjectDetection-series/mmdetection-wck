@@ -2,12 +2,12 @@
 fine-tune了以下参数：
     nms=dict(
     nms_across_levels=False,
-    nms_pre=20000,           # fine-tune: 2000,  20000
+    nms_pre=2000,           # fine-tune: 2000,  20000
     min_bbox_size=0)),
 =>
     nms=dict(
     nms_across_levels=False,
-    nms_pre=2000,           # fine-tune: 2000,  20000
+    nms_pre=20000,           # fine-tune: 2000,  20000
     min_bbox_size=0)),
 """
 # model settings
@@ -95,13 +95,6 @@ train_cfg = dict(
             max_num=2000,
             nms_thr=0.7,
             min_bbox_size=0)),
-    # rpn_proposal=dict(
-    #     nms_across_levels=False,
-    #     nms_pre=2000,
-    #     nms_post=2000,
-    #     max_num=2000,
-    #     nms_thr=0.7,
-    #     min_bbox_size=0),
     rcnn=dict(
         assigner=dict(
             type='MaxIoUAssigner',
