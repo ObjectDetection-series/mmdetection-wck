@@ -1,20 +1,3 @@
-"""
-fine-tune了以下参数：
-    sampler=dict(
-            type='RandomSampler',
-            num=128,
-            pos_fraction=0.25,
-            neg_pos_ub=5,
-            add_gt_as_proposals=False),
-    =>
-    sampler=dict(
-            type='RandomSampler',
-            num=256,
-            pos_fraction=0.5,
-            neg_pos_ub=5,
-            add_gt_as_proposals=False),
-"""
-
 # model settings
 model = dict(
     type='FasterRCNNMulFPNAdd',
@@ -88,7 +71,7 @@ train_cfg = dict(
             type='RandomSampler',              # YY    Libra
             num=256,                # fine-tune: 120,  256
             pos_fraction=0.25,       # fine-tune: 0.25  0.5
-            neg_pos_ub=5,           # fine-tune: -1    5
+            neg_pos_ub=-1,           # fine-tune: -1    5
             add_gt_as_proposals=False),
         allowed_border=-1,
         pos_weight=-1,
@@ -100,13 +83,6 @@ train_cfg = dict(
             max_num=2000,
             nms_thr=0.7,
             min_bbox_size=0)),
-    # rpn_proposal=dict(
-    #     nms_across_levels=False,
-    #     nms_pre=2000,
-    #     nms_post=2000,
-    #     max_num=2000,
-    #     nms_thr=0.7,
-    #     min_bbox_size=0),
     rcnn=dict(
         assigner=dict(
             type='MaxIoUAssigner',
