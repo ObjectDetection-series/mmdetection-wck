@@ -84,7 +84,9 @@ def main():
 
         # Author:WangCK  dataset:kaist_[backbone:r50 + neck:BFP]
         # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_YY.py',
-        '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_1.py'
+        # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_1.py',
+        # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py',
+        '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py'
 
         # Author:WangCK  dataset:kaist_[backbone:v16 + neck:BFP]
     ]
@@ -105,7 +107,7 @@ def main():
 
         dataset = obj_from_dict(cfg.data.val, datasets, dict(test_mode=True))
         # load model
-        checkpoint_file = osp.join(cfg.work_dir, 'epoch_26.pth')
+        checkpoint_file = osp.join(cfg.work_dir, 'epoch_1.pth')
         model = build_detector(
             cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
         load_checkpoint(model, checkpoint_file)
@@ -121,7 +123,7 @@ def main():
             shuffle=False)
 
         # eval outputs
-        outputs = single_test(model, data_loader, True)
+        outputs = single_test(model, data_loader, False)
         if 'caltech' in config:
             eval_caltech_mr()
         if 'kaist' in config:

@@ -250,11 +250,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 2       # 12 -> 30
+total_epochs = 4       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_6'
 # work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
 load_from = None
-resume_from = None
+resume_from = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_6/latest.pth'
 workflow = [('train', 1)]

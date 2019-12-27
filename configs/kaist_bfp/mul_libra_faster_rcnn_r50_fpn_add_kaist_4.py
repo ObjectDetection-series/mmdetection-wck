@@ -14,11 +14,11 @@ model = dict(
             type='FPN',
             in_channels=[256, 512, 1024, 2048],
             out_channels=256,
-            num_outs=4),    # 5 -> 4
+            num_outs=4),
         dict(
             type='BFP',
             in_channels=256,
-            num_levels=4,   # 5 -> 4
+            num_levels=4,
             refine_level=2,
             refine_type='non_local')
     ],
@@ -69,16 +69,16 @@ train_cfg = dict(
             ignore_iof_thr=-1),
         sampler=dict(
             type='RandomSampler',              # YY    Libra
-            num=256,                # fine-tune: 120,  256
-            pos_fraction=0.25,       # fine-tune: 0.25  0.5
-            neg_pos_ub=-1,           # fine-tune: -1    5
+            num=120,                # fine-tune: 120,  256
+            pos_fraction=0.25,      # fine-tune: 0.25  0.5
+            neg_pos_ub=5,           # fine-tune: -1    5
             add_gt_as_proposals=False),
         allowed_border=-1,
         pos_weight=-1,
         debug=False,
         nms=dict(
             nms_across_levels=False,
-            nms_pre=2000,           # fine-tune: 2000,  20000
+            nms_pre=2000,
             nms_post=2000,
             max_num=2000,
             nms_thr=0.7,
@@ -92,7 +92,7 @@ train_cfg = dict(
             ignore_iof_thr=-1),
         sampler=dict(
             type='CombinedSampler',
-            num=512,
+            num=512,                 # fine-tuning
             pos_fraction=0.25,
             add_gt_as_proposals=True,
             pos_sampler=dict(type='InstanceBalancedPosSampler'),
@@ -112,7 +112,7 @@ test_cfg = dict(
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100)     # fine-tune: 40,   100
+        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=40)     # fine-tune: 40,   100
     # soft-nms is also supported for rcnn testing
     # e.g., nms=dict(type='soft_nms', iou_thr=0.5, min_score=0.05)
 )
@@ -163,49 +163,6 @@ data = dict(
         with_mask=False,
         with_label=False,
         test_mode=True))
-# train_pipeline = [
-#     dict(type='LoadImageFromFile'),
-#     dict(type='LoadAnnotations', with_bbox=True),
-#     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
-#     dict(type='RandomFlip', flip_ratio=0.5),
-#     dict(type='Normalize', **img_norm_cfg),
-#     dict(type='Pad', size_divisor=32),
-#     dict(type='DefaultFormatBundle'),
-#     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
-# ]
-# test_pipeline = [
-#     dict(type='LoadImageFromFile'),
-#     dict(
-#         type='MultiScaleFlipAug',
-#         img_scale=(1333, 800),
-#         flip=False,
-#         transforms=[
-#             dict(type='Resize', keep_ratio=True),
-#             dict(type='RandomFlip'),
-#             dict(type='Normalize', **img_norm_cfg),
-#             dict(type='Pad', size_divisor=32),
-#             dict(type='ImageToTensor', keys=['img']),
-#             dict(type='Collect', keys=['img']),
-#         ])
-# ]
-# data = dict(
-#     imgs_per_gpu=2,
-#     workers_per_gpu=2,
-#     train=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_train2017.json',
-#         img_prefix=data_root + 'train2017/',
-#         pipeline=train_pipeline),
-#     val=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_val2017.json',
-#         img_prefix=data_root + 'val2017/',
-#         pipeline=test_pipeline),
-#     test=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_val2017.json',
-#         img_prefix=data_root + 'val2017/',
-#         pipeline=test_pipeline))
 
 # optimizer
 optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
@@ -219,8 +176,8 @@ lr_config = dict(
     # warmup_ratio=1.0 / 3,
     step=[4, 8])
 checkpoint_config = dict(interval=1)
-# yapf:disable
 
+# yapf:disable
 log_config = dict(
     interval=100,
     hooks=[
@@ -230,7 +187,7 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 2       # 12 -> 30
+total_epochs = 4       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_4'

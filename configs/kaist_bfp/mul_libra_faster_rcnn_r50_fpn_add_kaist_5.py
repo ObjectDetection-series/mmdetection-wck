@@ -2,12 +2,12 @@
 fine-tune了以下参数：
     nms=dict(
     nms_across_levels=False,
-    nms_pre=2000,           # fine-tune: 2000,  20000
+    nms_pre=2000,           # fine-tune
     min_bbox_size=0)),
 =>
     nms=dict(
     nms_across_levels=False,
-    nms_pre=20000,           # fine-tune: 2000,  20000
+    nms_pre=20000,           # fine-tune
     min_bbox_size=0)),
 """
 # model settings

@@ -14,11 +14,11 @@ model = dict(
             type='FPN',
             in_channels=[256, 512, 1024, 2048],
             out_channels=256,
-            num_outs=4),    # 5 -> 4
+            num_outs=4),
         dict(
             type='BFP',
             in_channels=256,
-            num_levels=4,   # 5 -> 4
+            num_levels=4,   
             refine_level=2,
             refine_type='non_local')
     ],
@@ -83,13 +83,6 @@ train_cfg = dict(
             max_num=2000,
             nms_thr=0.7,
             min_bbox_size=0)),
-    # rpn_proposal=dict(
-    #     nms_across_levels=False,
-    #     nms_pre=2000,
-    #     nms_post=2000,
-    #     max_num=2000,
-    #     nms_thr=0.7,
-    #     min_bbox_size=0),
     rcnn=dict(
         assigner=dict(
             type='MaxIoUAssigner',

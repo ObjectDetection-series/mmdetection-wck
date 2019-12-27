@@ -1,7 +1,7 @@
 # model settings
 model = dict(
     type='FasterRCNNMulFPNAdd',
-    pretrained='torchvision://vgg16',       # ?
+    pretrained='torchvision://vgg16',
     backbone=dict(
         type='MulVGG',
         depth=16,
@@ -15,11 +15,11 @@ model = dict(
                 type='FPN',
                 in_channels=[128, 256, 512, 512],
                 out_channels=128,
-                num_outs=4),    # 5 -> 4
+                num_outs=4),
             dict(
                 type='BFP',
                 in_channels=128,
-                num_levels=4,   # 5 -> 4
+                num_levels=4,
                 refine_level=2,
                 refine_type='non_local')
         ],
@@ -109,13 +109,15 @@ train_cfg = dict(
 test_cfg = dict(
     rpn=dict(
         nms_across_levels=False,
-        nms_pre=10000,
-        nms_post=10000,
-        max_num=300,
+        nms_pre=1000,
+        nms_post=1000,
+        max_num=1000,
         nms_thr=0.7,
         min_bbox_size=0),
+    # rcnn=dict(
+    #     score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))
     rcnn=dict(
-        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))
+        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))
 
 # dataset settings
 dataset_type = 'KaistDataset'
