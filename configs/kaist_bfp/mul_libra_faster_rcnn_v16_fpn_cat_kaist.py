@@ -1,7 +1,7 @@
 # model settings
 model = dict(
     type='FasterRCNNMulFPNCat',
-    pretrained='torchvision://vgg16',       # ?
+    pretrained='torchvision://vgg16',
     backbone=dict(
         type='MulVGG',
         depth=16,
@@ -109,13 +109,15 @@ train_cfg = dict(
 test_cfg = dict(
     rpn=dict(
         nms_across_levels=False,
-        nms_pre=10000,
-        nms_post=10000,
-        max_num=300,
+        nms_pre=1000,
+        nms_post=1000,
+        max_num=1000,
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))
+        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))    # YY
+    # rcnn=dict(
+    #     score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100))    # Libra
 
 # dataset settings
 dataset_type = 'KaistDataset'
@@ -179,7 +181,7 @@ checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=100,
+    interval=1000,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -190,8 +192,8 @@ log_config = dict(
 total_epochs = 25
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_v16_fpn_cat_kaist'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_v16_fpn_cat_kaist'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_v16_fpn_cat_kaist'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_v16_fpn_cat_kaist'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

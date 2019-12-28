@@ -1,6 +1,6 @@
 # model settings
 model = dict(
-    type='FasterRCNNMulFPNAdd',
+    type='FasterRCNNMulPreFPNAdd',
     pretrained='torchvision://resnet50',
     backbone=dict(
         type='MulResnet',
@@ -14,6 +14,7 @@ model = dict(
             type='FPN',
             in_channels=[256, 512, 1024, 2048],
             out_channels=256,
+            out_indices=[0, 1, 2, 3],
             num_outs=4),
         dict(
             type='BFP',
@@ -68,10 +69,10 @@ train_cfg = dict(
             min_pos_iou=0.3,
             ignore_iof_thr=-1),
         sampler=dict(
-            type='RandomSampler',              # YY    Libra
-            num=120,                # fine-tune: 120,  256
-            pos_fraction=0.25,      # fine-tune: 0.25  0.5
-            neg_pos_ub=5,           # fine-tune: -1    5
+            type='RandomSampler',
+            num=120,
+            pos_fraction=0.25,
+            neg_pos_ub=5,
             add_gt_as_proposals=False),
         allowed_border=-1,
         pos_weight=-1,
@@ -106,9 +107,9 @@ train_cfg = dict(
 test_cfg = dict(
     rpn=dict(
         nms_across_levels=False,
-        nms_pre=1000,               # fine-tune: 10000,  1000
-        nms_post=1000,              # fine-tune: 10000,  1000
-        max_num=1000,               # fine-tune: 300,    1000
+        nms_pre=1000,
+        nms_post=1000,
+        max_num=1000,
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
@@ -135,7 +136,7 @@ data = dict(
         img_scale=(960, 768),      # 缩放因子 1.5 -> (960, 768)
         img_norm_cfg=img_norm_cfg,
         img_norm_cfg_t=img_norm_cfg_t,
-        size_divisor=None,  # 调整因子
+        size_divisor=None,
         flip_ratio=0.5,
         with_mask=False,
         with_crowd=True,
@@ -179,7 +180,7 @@ checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=100,
+    interval=1000,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -187,10 +188,10 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 4       # 12 -> 30
+total_epochs = 25       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_add_kaist_4'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist'
 # work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_add_kaist'
 load_from = None
 resume_from = None

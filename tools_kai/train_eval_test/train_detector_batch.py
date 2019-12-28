@@ -43,21 +43,26 @@ def main():
 
             # Author:WangCK  dataset:kaist_[backbone:r50 + neck:BFP]
 
+            # 使用下面的配置文件进行调参
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_YY.py',
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_1.py',
-
-            # 使用下面的配置文件进行调参
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py'
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_3.py',
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py',
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_5.py',
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_6.py',
-            
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist.py'
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py'
 
-            # Author:WangCK  dataset:kaist_[backbone:v16 + neck:BFP]
+            # 先融合特征，再构建BFP
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist_4.py'
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist.py'
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py'
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py',
+
+            # 先构建BFP，再融合特征
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_cat_kaist.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_cat_kaist.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_add_kaist.py'
         ]
 
     for config in configs:
@@ -76,8 +81,8 @@ def main():
         # temp_file = '/home/' + username + '/WangCK/Data/temp/temp.txt'
         temp_file = '/media/' + username + '/3rd/WangCK/Data/temp/temp.txt'
         fo = open(temp_file, 'w+')
-        str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
         # str_write = cfg.work_dir.replace('../..', ('/home/' + username + '/WangCK/Data'))
+        str_write = cfg.work_dir.replace('../..', ('/media/'+username+'/3rd/WangCK/Data'))
         fo.write(str_write)
         fo.close()
 

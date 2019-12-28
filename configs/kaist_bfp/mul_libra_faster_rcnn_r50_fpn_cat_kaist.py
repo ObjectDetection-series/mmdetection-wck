@@ -83,13 +83,6 @@ train_cfg = dict(
             max_num=2000,
             nms_thr=0.7,
             min_bbox_size=0)),
-    # rpn_proposal=dict(
-    #     nms_across_levels=False,
-    #     nms_pre=2000,
-    #     nms_post=2000,
-    #     max_num=2000,
-    #     nms_thr=0.7,
-    #     min_bbox_size=0),
     rcnn=dict(
         assigner=dict(
             type='MaxIoUAssigner',
@@ -170,49 +163,6 @@ data = dict(
         with_mask=False,
         with_label=False,
         test_mode=True))
-# train_pipeline = [
-#     dict(type='LoadImageFromFile'),
-#     dict(type='LoadAnnotations', with_bbox=True),
-#     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
-#     dict(type='RandomFlip', flip_ratio=0.5),
-#     dict(type='Normalize', **img_norm_cfg),
-#     dict(type='Pad', size_divisor=32),
-#     dict(type='DefaultFormatBundle'),
-#     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
-# ]
-# test_pipeline = [
-#     dict(type='LoadImageFromFile'),
-#     dict(
-#         type='MultiScaleFlipAug',
-#         img_scale=(1333, 800),
-#         flip=False,
-#         transforms=[
-#             dict(type='Resize', keep_ratio=True),
-#             dict(type='RandomFlip'),
-#             dict(type='Normalize', **img_norm_cfg),
-#             dict(type='Pad', size_divisor=32),
-#             dict(type='ImageToTensor', keys=['img']),
-#             dict(type='Collect', keys=['img']),
-#         ])
-# ]
-# data = dict(
-#     imgs_per_gpu=2,
-#     workers_per_gpu=2,
-#     train=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_train2017.json',
-#         img_prefix=data_root + 'train2017/',
-#         pipeline=train_pipeline),
-#     val=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_val2017.json',
-#         img_prefix=data_root + 'val2017/',
-#         pipeline=test_pipeline),
-#     test=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_val2017.json',
-#         img_prefix=data_root + 'val2017/',
-#         pipeline=test_pipeline))
 
 # optimizer
 optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
@@ -226,10 +176,10 @@ lr_config = dict(
     # warmup_ratio=1.0 / 3,
     step=[4, 8])
 checkpoint_config = dict(interval=1)
-# yapf:disable
 
+# yapf:disable
 log_config = dict(
-    interval=20,
+    interval=100,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -240,8 +190,8 @@ log_config = dict(
 total_epochs = 20       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_cat_kaist'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_cat_kaist'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_cat_kaist'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_cat_kaist'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
