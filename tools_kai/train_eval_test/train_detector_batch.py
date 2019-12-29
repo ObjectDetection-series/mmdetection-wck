@@ -60,15 +60,15 @@ def main():
 
             # 先构建BFP，再融合特征
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_cat_kaist.py',
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist.py',
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_cat_kaist.py'
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist.py',
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_cat_kaist.py'
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_add_kaist.py'
 
-            #'../../configs/kaist_fpn/mul_faster_rcnn_v16_pre_fpn_cat_kaist.py'
+            # '../../configs/kaist_fpn/mul_faster_rcnn_v16_pre_fpn_cat_kaist.py'
         ]
 
     for config in configs:
-         # load dataset
+        # load dataset
         cfg = Config.fromfile(config)
         cfg.gpus = 1
 

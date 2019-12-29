@@ -11,6 +11,7 @@ Description: This file defines a ResNet to process multi-modal datasets.
              Then, the results from these standard ResNets will be added in element-wise.
 """
 
+
 @BACKBONES.register_module
 class MulAddResnet(nn.Module):
 

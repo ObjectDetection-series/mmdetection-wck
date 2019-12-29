@@ -19,7 +19,7 @@ class TwoStageDetectorPreFPNCat(TwoStageDetectorMul):
         # extract feature maps of RGB channel and Thermal channel respectively
         feats_rgb, feats_t = self.backbone(img, img_t)
         x = []
-        for (r, t) in enumerate(feats_rgb, feats_t):
+        for (r, t) in zip(feats_rgb, feats_t):
             temp = torch.cat([r, t], 1)     # concatenate each feature maps of RGB images and thermal images
             x.append(temp)
         x = tuple(x)

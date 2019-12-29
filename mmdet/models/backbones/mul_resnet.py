@@ -11,6 +11,7 @@ Description: This file defines a ResNet to process multi-model(two) datasets.
              Then, the results from these standard ResNet will be returned.
 """
 
+
 @BACKBONES.register_module
 class MulResnet(nn.Module):
 

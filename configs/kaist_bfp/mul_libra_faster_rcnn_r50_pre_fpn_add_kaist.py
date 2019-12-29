@@ -112,7 +112,7 @@ test_cfg = dict(
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40)     # fine-tune: 40,   100
+        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=100)     # fine-tune: 40,   100
     # soft-nms is also supported for rcnn testing
     # e.g., nms=dict(type='soft_nms', iou_thr=0.5, min_score=0.05)
 )
@@ -187,7 +187,7 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 25       # 12 -> 30
+total_epochs = 20       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist'
