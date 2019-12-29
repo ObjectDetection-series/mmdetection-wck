@@ -115,10 +115,10 @@ test_cfg = dict(
         max_num=1000,
         nms_thr=0.7,
         min_bbox_size=0),
-    # rcnn=dict(
-    #     score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))    # YY
     rcnn=dict(
-        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100))    # Libra
+        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))    # YY
+    # rcnn=dict(
+    #     score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100))    # Libra
 
 # dataset settings
 dataset_type = 'KaistDataset'
@@ -182,7 +182,7 @@ checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=1000,
+    interval=100,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')

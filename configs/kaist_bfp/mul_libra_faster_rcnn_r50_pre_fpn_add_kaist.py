@@ -14,7 +14,6 @@ model = dict(
             type='FPN',
             in_channels=[256, 512, 1024, 2048],
             out_channels=256,
-            out_indices=[0, 1, 2, 3],
             num_outs=4),
         dict(
             type='BFP',
@@ -113,7 +112,7 @@ test_cfg = dict(
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=40)     # fine-tune: 40,   100
+        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40)     # fine-tune: 40,   100
     # soft-nms is also supported for rcnn testing
     # e.g., nms=dict(type='soft_nms', iou_thr=0.5, min_score=0.05)
 )
@@ -180,7 +179,7 @@ checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=1000,
+    interval=50,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -192,7 +191,7 @@ total_epochs = 25       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_add_kaist'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

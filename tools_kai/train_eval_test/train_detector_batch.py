@@ -55,14 +55,16 @@ def main():
             # 先融合特征，再构建BFP
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist_4.py'
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist.py'
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py'
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py'
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py',
 
             # 先构建BFP，再融合特征
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_cat_kaist.py',
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist.py',
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_cat_kaist.py',
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_cat_kaist.py'
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_add_kaist.py'
+
+            #'../../configs/kaist_fpn/mul_faster_rcnn_v16_pre_fpn_cat_kaist.py'
         ]
 
     for config in configs:

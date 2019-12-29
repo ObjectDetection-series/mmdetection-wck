@@ -19,6 +19,7 @@ model = dict(
         dict(
             type='BFP',
             in_channels=128,
+            out_indices=[0, 1, 2, 3],
             num_levels=4,
             refine_level=2,
             refine_type='non_local')
@@ -113,7 +114,7 @@ test_cfg = dict(
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100)
+        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=40)
     # soft-nms is also supported for rcnn testing
     # e.g., nms=dict(type='soft_nms', iou_thr=0.5, min_score=0.05)
 )
@@ -180,7 +181,7 @@ checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=1000,
+    interval=100,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')

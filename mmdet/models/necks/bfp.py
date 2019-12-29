@@ -34,7 +34,8 @@ class BFP(nn.Module):
                  refine_level=2,
                  refine_type=None,
                  conv_cfg=None,
-                 norm_cfg=None):
+                 norm_cfg=None,
+                 out_indices=None):
         super(BFP, self).__init__()
         assert refine_type in [None, 'conv', 'non_local']
 
@@ -42,6 +43,7 @@ class BFP(nn.Module):
         self.num_levels = num_levels
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
+        self.out_indices = out_indices
 
         self.refine_level = refine_level
         self.refine_type = refine_type
@@ -99,4 +101,11 @@ class BFP(nn.Module):
                 residual = F.adaptive_max_pool2d(bsf, output_size=out_size)
             outs.append(residual + inputs[i])
 
-        return tuple(outs)
+        # return tuple(outs)
+        """
+        Kai add following lines for performing 'finest layer of FPN' experiment.
+        """
+        if self.out_indices is not None:
+            return tuple([outs[i] for i in self.out_indices])
+        else:
+            return tuple(outs)
