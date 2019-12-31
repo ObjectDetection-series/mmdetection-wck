@@ -86,7 +86,7 @@ def main():
         # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_YY.py',
         # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_1.py',
         # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py',
-        '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py'
+        '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py'
 
         # Author:WangCK  dataset:kaist_[backbone:v16 + neck:BFP]
     ]

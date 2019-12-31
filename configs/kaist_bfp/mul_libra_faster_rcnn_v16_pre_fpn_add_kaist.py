@@ -85,8 +85,7 @@ train_cfg = dict(
             nms_post=2000,
             max_num=2000,
             nms_thr=0.7,
-            min_bbox_size=0)
-    ),
+            min_bbox_size=0)),
     rcnn=dict(
         assigner=dict(
             type='MaxIoUAssigner',
@@ -182,7 +181,7 @@ checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=1000,
+    interval=500,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -190,7 +189,7 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 40
+total_epochs = 25
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_v16_pre_fpn_add_kaist'

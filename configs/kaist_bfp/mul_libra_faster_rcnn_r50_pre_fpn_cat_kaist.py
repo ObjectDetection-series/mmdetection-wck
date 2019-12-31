@@ -14,7 +14,6 @@ model = dict(
             type='FPN',
             in_channels=[512, 1024, 2048, 4096],
             out_channels=128,
-            out_indices=[0, 1, 2, 3],
             num_outs=4),
         dict(
             type='BFP',
@@ -31,6 +30,7 @@ model = dict(
         anchor_scales=[8, 10, 12, 14],
         anchor_ratios=[2.0, 1.0],
         anchor_strides=[4, 8, 16, 32],
+        anchor_base_sizes=[4, 8, 16, 32],
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
         loss_cls=dict(
@@ -114,7 +114,7 @@ test_cfg = dict(
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=40)
+        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40)
     # soft-nms is also supported for rcnn testing
     # e.g., nms=dict(type='soft_nms', iou_thr=0.5, min_score=0.05)
 )
@@ -128,8 +128,8 @@ img_norm_cfg = dict(
 img_norm_cfg_t = dict(
     mean=[123.675, 123.675, 123.675], std=[58.395, 58.395, 58.395], to_rgb=False)
 data = dict(
-    imgs_per_gpu=2,         # 4 -> 2
-    workers_per_gpu=2,      # 4 -> 2
+    imgs_per_gpu=4,         # 4 -> 2
+    workers_per_gpu=4,      # 4 -> 2
     train=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/train-all.pkl',
@@ -189,7 +189,7 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 25       # 12 -> 30
+total_epochs = 25
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_pre_fpn_cat_kaist'

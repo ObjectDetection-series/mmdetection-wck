@@ -12,7 +12,7 @@ Description: This file defines class TwoStageDetectorPreFPNAdd, inherited from T
 class TwoStageDetectorPreFPNAdd(TwoStageDetectorMul):
 
     """
-    (1) Fusion feature map by element-wise adding
+    (1) Fuse feature maps by element-wise adding
     (2) Build FPN based on fused feature maps
     """
     def extract_feat(self, img, img_t):

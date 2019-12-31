@@ -12,7 +12,7 @@ Description: This file defines class TwoStageDetectorPreFPNCat, inherited from T
 @DETECTORS.register_module
 class TwoStageDetectorPreFPNCat(TwoStageDetectorMul):
     """
-    (1) Fusion feature map by concatenating
+    (1) Fuse feature map by concatenating
     (2) Build FPN based on fusion feature maps
     """
     def extract_feat(self, img, img_t):

@@ -18,7 +18,7 @@ model = dict(
         dict(
             type='BFP',
             in_channels=256,
-            num_levels=4,   
+            num_levels=4,
             refine_level=2,
             refine_type='non_local')
     ],
@@ -29,6 +29,7 @@ model = dict(
         anchor_scales=[8, 10, 12, 14],
         anchor_ratios=[2.0, 1.0],
         anchor_strides=[4, 8, 16, 32],
+        anchor_base_sizes=[4, 8, 16, 32],
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
         loss_cls=dict(
@@ -78,7 +79,7 @@ train_cfg = dict(
         debug=False,
         nms=dict(
             nms_across_levels=False,
-            nms_pre=2000,           # fine-tune: 2000,  20000
+            nms_pre=2000,
             nms_post=2000,
             max_num=2000,
             nms_thr=0.7,
@@ -92,7 +93,7 @@ train_cfg = dict(
             ignore_iof_thr=-1),
         sampler=dict(
             type='CombinedSampler',
-            num=512,
+            num=512,                 # fine-tuning
             pos_fraction=0.25,
             add_gt_as_proposals=True,
             pos_sampler=dict(type='InstanceBalancedPosSampler'),
@@ -135,7 +136,7 @@ data = dict(
         img_scale=(960, 768),      # 缩放因子 1.5 -> (960, 768)
         img_norm_cfg=img_norm_cfg,
         img_norm_cfg_t=img_norm_cfg_t,
-        size_divisor=None,  # 调整因子
+        size_divisor=None,         # 调整因子
         flip_ratio=0.5,
         with_mask=False,
         with_crowd=True,
@@ -163,49 +164,6 @@ data = dict(
         with_mask=False,
         with_label=False,
         test_mode=True))
-# train_pipeline = [
-#     dict(type='LoadImageFromFile'),
-#     dict(type='LoadAnnotations', with_bbox=True),
-#     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
-#     dict(type='RandomFlip', flip_ratio=0.5),
-#     dict(type='Normalize', **img_norm_cfg),
-#     dict(type='Pad', size_divisor=32),
-#     dict(type='DefaultFormatBundle'),
-#     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
-# ]
-# test_pipeline = [
-#     dict(type='LoadImageFromFile'),
-#     dict(
-#         type='MultiScaleFlipAug',
-#         img_scale=(1333, 800),
-#         flip=False,
-#         transforms=[
-#             dict(type='Resize', keep_ratio=True),
-#             dict(type='RandomFlip'),
-#             dict(type='Normalize', **img_norm_cfg),
-#             dict(type='Pad', size_divisor=32),
-#             dict(type='ImageToTensor', keys=['img']),
-#             dict(type='Collect', keys=['img']),
-#         ])
-# ]
-# data = dict(
-#     imgs_per_gpu=2,
-#     workers_per_gpu=2,
-#     train=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_train2017.json',
-#         img_prefix=data_root + 'train2017/',
-#         pipeline=train_pipeline),
-#     val=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_val2017.json',
-#         img_prefix=data_root + 'val2017/',
-#         pipeline=test_pipeline),
-#     test=dict(
-#         type=dataset_type,
-#         ann_file=data_root + 'annotations/instances_val2017.json',
-#         img_prefix=data_root + 'val2017/',
-#         pipeline=test_pipeline))
 
 # optimizer
 optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
@@ -219,10 +177,10 @@ lr_config = dict(
     # warmup_ratio=1.0 / 3,
     step=[4, 8])
 checkpoint_config = dict(interval=1)
-# yapf:disable
 
+# yapf:disable
 log_config = dict(
-    interval=20,
+    interval=1000,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -230,11 +188,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 20       # 12 -> 30
+total_epochs = 25       # 12 -> 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/kaist/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/mul_libra_faster_rcnn_r50_fpn_add_kaist'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
