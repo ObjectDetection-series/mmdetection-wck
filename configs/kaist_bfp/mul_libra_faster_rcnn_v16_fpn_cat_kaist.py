@@ -192,8 +192,8 @@ log_config = dict(
 total_epochs = 25
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_v16_fpn_cat_kaist'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_v16_fpn_cat_kaist'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/v16_bfp_cat'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/v16_bfp_cat'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
