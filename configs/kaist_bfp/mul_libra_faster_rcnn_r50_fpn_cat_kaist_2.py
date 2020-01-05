@@ -26,20 +26,18 @@ model = dict(
         type='RPNHead',
         in_channels=256,
         feat_channels=256,
-
         anchor_scales=[8, 10, 12, 14],
         anchor_ratios=[2.0, 1.0],
         anchor_strides=[4, 8, 16, 32],
         anchor_base_sizes=[4, 8, 16, 32],
-
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
         loss_cls=dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0),
-        loss_bbox=dict(type='SmoothL1Loss', beta=1.0 / 9.0, loss_weight=1.0)),
+        loss_bbox=dict(type='SmoothL1Loss', beta=1.0, loss_weight=1.0)),
     bbox_roi_extractor=dict(
         type='SingleRoIExtractor',
-        roi_layer=dict(type='RoIAlign', out_size=7, sample_num=2),
+        roi_layer=dict(type='RoIAlign', out_size=7, sample_num=-1),
         out_channels=256,
         featmap_strides=[4, 8, 16, 32]),
     bbox_head=dict(
@@ -135,10 +133,10 @@ data = dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/train-all.pkl',
         img_prefix=data_root + 'images/',
-        img_scale=(960, 768),      # 缩放因子 1.5 -> (960, 768)
+        img_scale=(960, 768),
         img_norm_cfg=img_norm_cfg,
         img_norm_cfg_t=img_norm_cfg_t,
-        size_divisor=None,  # 调整因子
+        size_divisor=None,
         flip_ratio=0.5,
         with_mask=False,
         with_crowd=True,
@@ -182,7 +180,7 @@ checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=1000,
+    interval=500,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -190,11 +188,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 25
+total_epochs = 4
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_cat_kaist_2'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_cat_kaist_2'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/r50_bfp_cat_2'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/r50_bfp_cat_2'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

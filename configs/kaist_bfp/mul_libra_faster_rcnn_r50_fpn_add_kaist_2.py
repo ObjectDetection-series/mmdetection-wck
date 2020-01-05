@@ -37,7 +37,7 @@ model = dict(
         loss_bbox=dict(type='SmoothL1Loss', beta=1.0 / 9.0, loss_weight=1.0)),
     bbox_roi_extractor=dict(
         type='SingleRoIExtractor',
-        roi_layer=dict(type='RoIAlign', out_size=7, sample_num=2),
+        roi_layer=dict(type='RoIAlign', out_size=7, sample_num=-1),
         out_channels=256,
         featmap_strides=[4, 8, 16, 32]),
     bbox_head=dict(
@@ -188,11 +188,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 25       # 12 -> 30
+total_epochs = 4
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_fpn_add_kaist_2'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/r50_bfp_add_2'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/r50_bfp_add_2'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

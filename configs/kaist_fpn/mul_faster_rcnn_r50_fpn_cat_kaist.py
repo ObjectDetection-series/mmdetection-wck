@@ -19,12 +19,10 @@ model = dict(
         type='RPNHead',
         in_channels=256,
         feat_channels=256,
-
         anchor_ratios=[1/0.5, 1],
         anchor_scales=[8, 10, 12, 14],
         anchor_strides=[4, 8, 16, 32],
         anchor_base_sizes=[4, 8, 16, 32],
-
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
         use_sigmoid_cls=False),
