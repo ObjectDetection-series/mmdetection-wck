@@ -43,22 +43,22 @@ def main():
 
             # Author:WangCK  dataset:kaist_[backbone:r50 + neck:BFP]
 
-            # 第二组：先分别构建BFP，再融合特征
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist_1.py'     # [0.1, 40]
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist_2.py'      # [0.05, 100]
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_1.py',     # [0.05, 40]
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py',      # [0.1, 40]
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_3.py',    # [0.05, 100]
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py'   # [0.05, 100]
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py',
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'
-
             # 第一组：先融合特征，再构建BFP
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_cat_kaist.py',
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist_1.py',
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist_2.py'
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_cat_kaist.py'
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_pre_fpn_add_kaist.py'
+
+            # 第二组：先分别构建BFP，再融合特征
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist_1.py'     # [0.1, 40]
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_cat_kaist_2.py'      # [0.05, 100]
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_1.py',     # [0.05, 40]
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py',      # [0.1, 40]
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_3.py',    # [0.05, 100]
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py'   # [0.05, 100]
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py',
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'
         ]
 
     for config in configs:

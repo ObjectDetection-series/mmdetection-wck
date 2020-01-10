@@ -188,7 +188,7 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 25
+total_epochs = 30
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/r50_bfp_cat_1'

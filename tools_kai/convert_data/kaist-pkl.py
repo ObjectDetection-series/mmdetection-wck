@@ -20,10 +20,10 @@ def main():
     # pkl_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist_mlfpn-rgbt/annotations-pkl/')
     # txt_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist_mlfpn-rgbt/imageSets/')
     # img_dir = osp.join('/home/' + username + '/WangCK/Data/datasets/kaist_mlfpn-rgbt/images/')
-    xml_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/annotations-xml/')
-    pkl_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/annotations-pkl/')
-    txt_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/imageSets/')
-    img_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist_mlfpn-rgbt/images/')
+    xml_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/annotations-xml/')
+    pkl_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/annotations-pkl/')
+    txt_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/imageSets/')
+    img_dir = osp.join('/media/' + username + '/3rd/WangCK/Data/datasets/kaist-rgbt/images/')
     mmcv.mkdir_or_exist(pkl_dir)
 
     # all images

@@ -2,10 +2,15 @@ import xml.etree.ElementTree as ET
 import numpy as np
 import collections
 import sys
+import os.path as osp
 from mmcv.utils.progressbar import ProgressBar
 
 
 def parse_xml(args):
+    """
+    param args:
+    filename: add by kai. The images containing pedestrian will be written into this file.
+    """
     xml_path, img_path, flag = args
     tree = ET.parse(xml_path)
     root = tree.getroot()
@@ -37,7 +42,7 @@ def parse_xml(args):
 
     if not bboxes:
         if flag == 'train':
-            return None  # images without pedestrian can be ignored during training
+            return None     # images without pedestrian can be ignored during training
         else:
             bboxes = np.zeros((0, 4))
             labels = np.zeros((0,))
@@ -64,6 +69,20 @@ def parse_xml(args):
             'labels_ignore': labels_ignore.astype(np.int64)
         }
     }
+
+    prefix = '/media/ser248/3rd/WangCK/Data/datasets/kaist-rgbt/imageSets/'
+    true_train_file = osp.join(prefix, 'true-train-all-02.txt')
+    true_test_file = osp.join(prefix, 'true-test-all-20.txt')
+    img_path = img_path.replace('visible', 'lwir')
+
+    if flag == 'train':
+        with open(true_train_file, 'a') as f:
+            f.write(img_path + '\n')
+
+    if flag == 'test':
+        with open(true_test_file, 'a') as f:
+            f.write(img_path + '\n')
+
     return annotation
 
 
@@ -140,13 +159,13 @@ def track_progress_kai(func, tasks, bar_width=50, **kwargs):
     prog_bar = ProgressBar(task_num, bar_width)
     results = []
     for task in tasks:
-        temp = func(task, **kwargs)
+        annotation = func(task, **kwargs)
         """
         Kai: If temp(annotation) returned by func() is not empty, it will be added to results
         and the prog_bar will update. By contrast, not update.
         """
-        if temp is not None:
-            results.append(temp)
+        if annotation is not None:
+            results.append(annotation)
             prog_bar.update()
     sys.stdout.write('\n')
     return results
