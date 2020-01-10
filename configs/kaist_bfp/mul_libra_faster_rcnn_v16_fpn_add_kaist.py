@@ -193,8 +193,8 @@ log_config = dict(
 total_epochs = 25
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/Expirement2/v16_bfp_add_saliencyMap'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/Expirement2/v16_bfp_add_saliencyMap'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/Expirement2/v16_bfp_add_saliencyMap_2'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/Expirement2/v16_bfp_add_saliencyMap_2'
 load_from = None
-resume_from = None
+resume_from = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/Expirement2/v16_bfp_add_saliencyMap_2/latest.pth'
 workflow = [('train', 1)]

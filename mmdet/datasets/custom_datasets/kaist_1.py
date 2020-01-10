@@ -56,23 +56,21 @@ class KaistDataset(CustomDatasetV056):
             img[:, :, 2] = img_temp
         else:
             img = img_temp
+        # load image(thermal)
+        img_t_path = osp.join(self.img_prefix, img_info['filename']).replace('visible', 'lwir')
+        # img_t = cv2.imread(img_t_path)      # three channels,??? img_t[:,:,0]==img_t[:,:,2]!= img_t[:,:,1]
+        # img_t = cv2.imread(img_t_path, cv2.IMREAD_COLOR)
+        # img_t[:, :, 1] = img_t[:, :, 0]
+        img_t = mmcv.imread(img_t_path, 'color')
         """
         kai: augment the thermal image with corresponding saliency map. Do this by replacing
         one duplicate channel of the 3-channel thermal images with corresponding saliency map.
         """
-        # load original thermal image
-        original_t_path = osp.join(self.img_prefix, img_info['filename']).replace('visible', 'lwir')
-        original_t = cv2.imread(original_t_path)
-
-        # load saliency map
-        saliency_map_path = original_t_path.replace('images', 'saliencyMaps/train_masks')
-        saliency_map = cv2.imread(saliency_map_path)
-
-        # augment original image with saliency map
-        img_t = np.zeros_like(original_t)
-        img_t[:, :, 0] = original_t[:, :, 0]
-        img_t[:, :, 1] = original_t[:, :, 1]
-        img_t[:, :, 2] = saliency_map[:, :, 2]
+        # 读取img_t对应的saliency map
+        img_t_mask_path = img_t_path.replace('images', 'saliencyMaps/train_masks')
+        # img_t_mask = cv2.imread(img_t_mask_path, cv2.IMREAD_GRAYSCALE)
+        img_t_mask = mmcv.imread(img_t_mask_path, 'grayscale')
+        img_t[:, :, 0] = img_t_mask     # 使用saliency map代替img_t的R通道
 
         # 显示Fused thermal image
         # screen_res = 640, 512
@@ -169,23 +167,20 @@ class KaistDataset(CustomDatasetV056):
             img[:, :, 2] = img_temp
         else:
             img = img_temp
+        # load image(thermal)
+        img_t_path = osp.join(self.img_prefix, img_info['filename']).replace('visible', 'lwir')
+        # img_t = cv2.imread(img_t_path)
+        # img_t[:, :, 1] = img_t[:, :, 0]
+        img_t = mmcv.imread(img_t_path, 'color')
         """
         kai: augment the thermal image with corresponding saliency map. Do this by replacing
         one duplicate channel of the 3-channel thermal images with corresponding saliency map.
         """
-        # load original thermal image
-        original_t_path = osp.join(self.img_prefix, img_info['filename']).replace('visible', 'lwir')
-        original_t = cv2.imread(original_t_path)
-
-        # load saliency map
-        saliency_map_path = original_t_path.replace('images', 'saliencyMaps/test_masks')
-        saliency_map = cv2.imread(saliency_map_path)
-
-        # augment original image with saliency map
-        img_t = np.zeros_like(original_t)
-        img_t[:, :, 0] = original_t[:, :, 0]
-        img_t[:, :, 1] = original_t[:, :, 1]
-        img_t[:, :, 2] = saliency_map[:, :, 2]
+        # 读取img_t对应的saliency map
+        img_t_mask_path = img_t_path.replace('images', 'saliencyMaps/test_masks')
+        # img_t_mask = cv2.imread(img_t_mask_path, cv2.IMREAD_GRAYSCALE)
+        img_t_mask = mmcv.imread(img_t_mask_path, 'grayscale')
+        img_t[:, :, 0] = img_t_mask     # 使用saliency map代替img_t的R通道
 
         if self.proposals is not None:
             proposal = self.proposals[idx][:self.num_max_proposals]
