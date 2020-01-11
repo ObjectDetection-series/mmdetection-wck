@@ -21,26 +21,6 @@ Description: This script is used to train detectors with config file.
 def main():
     configs = \
         [
-            # '../../configs/cvc09/faster_rcnn_r50_c4_cvc.py',
-            # '../../configs/cvc09/faster_rcnn_r50_fpn_cvc.py',
-            # '../../configs/cvc09/faster_rcnn_r50_mlfpn_cvc.py',
-            # '../../configs/cvc09/faster_rcnn_v16_c5_cvc.py',
-            # '../../configs/cvc09/faster_rcnn_v16_fpn_cvc.py',
-
-
-            # Author:WangCK  dataset:kaist_[backbone:r50 + neck:FPN]
-
-            # '../../configs/kaist_fpn/mul_faster_rcnn_r50_fpn_add_kaist.py',
-
-            # Author:WangCK  dataset:kaist_[backbone:r50 + neck:MLFPN]
-            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_mlfpn_add_kaist.py',
-            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_mlfpn_cat_kaist.py',
-            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_pre_mlfpn_add_kaist.py',
-            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_pre_mlfpn_cat_kaist.py',
-            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_add_kaist.py',
-            # '../../configs/kaist_mlfpn/mul_faster_rcnn_r50_c4_cat_kaist.py',
-
-
             # Author:WangCK  dataset:kaist_[backbone:r50 + neck:BFP]
 
             # 第一组：先融合特征，再构建BFP
@@ -57,8 +37,8 @@ def main():
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py',      # [0.1, 40]
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_3.py',    # [0.05, 100]
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py'   # [0.05, 100]
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py',
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'
         ]
 
     for config in configs:

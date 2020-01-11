@@ -65,24 +65,15 @@ class KaistDataset(CustomDatasetV056):
         original_t = cv2.imread(original_t_path)
 
         # load saliency map
-        saliency_map_path = original_t_path.replace('images', 'saliencyMaps/train_masks')
-        saliency_map = cv2.imread(saliency_map_path)
+        saliency_map_path = original_t_path.replace('images', 'saliencyMaps/R3Net_kaist_16960/train_masks')
+        saliency_map = cv2.imread(saliency_map_path, cv2.IMREAD_GRAYSCALE)
 
         # augment original image with saliency map
         img_t = np.zeros_like(original_t)
         img_t[:, :, 0] = original_t[:, :, 0]
         img_t[:, :, 1] = original_t[:, :, 1]
-        img_t[:, :, 2] = saliency_map[:, :, 2]
-
-        # 显示Fused thermal image
-        # screen_res = 640, 512
-        # scale_width = screen_res[0] / img_t.shape[1]
-        # scale_height = screen_res[1] / img_t.shape[0]
-        # scale = min(scale_width, scale_height)
-        # window_width = int(img_t.shape[1] * scale)
-        # window_height = int(img_t.shape[0] * scale)
-        # cv2.namedWindow('Fused Thermal Iamge', cv2.WINDOW_NORMAL)
-        # cv2.resizeWindow('Fused Thermal Iamge', window_width, window_height)
+        img_t[:, :, 2] = saliency_map
+        # img_t[:, :, 2] = saliency_map[:, :, 2]
 
         # load proposals if necessary
         if self.proposals is not None:
@@ -178,14 +169,15 @@ class KaistDataset(CustomDatasetV056):
         original_t = cv2.imread(original_t_path)
 
         # load saliency map
-        saliency_map_path = original_t_path.replace('images', 'saliencyMaps/test_masks')
-        saliency_map = cv2.imread(saliency_map_path)
+        saliency_map_path = original_t_path.replace('images', 'saliencyMaps/R3Net_kaist_16960/test_masks')
+        saliency_map = cv2.imread(saliency_map_path, cv2.IMREAD_GRAYSCALE)
 
         # augment original image with saliency map
         img_t = np.zeros_like(original_t)
         img_t[:, :, 0] = original_t[:, :, 0]
         img_t[:, :, 1] = original_t[:, :, 1]
-        img_t[:, :, 2] = saliency_map[:, :, 2]
+        img_t[:, :, 2] = saliency_map
+        # img_t[:, :, 2] = saliency_map[:, :, 2]
 
         if self.proposals is not None:
             proposal = self.proposals[idx][:self.num_max_proposals]
