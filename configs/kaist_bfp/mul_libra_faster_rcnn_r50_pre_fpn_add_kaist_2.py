@@ -29,7 +29,7 @@ model = dict(
         anchor_ratios=[2.0, 1.0],
         anchor_scales=[8, 10, 12, 14],
         anchor_strides=[4, 8, 16, 32],
-        anchor_base_sizes=[4, 8, 16, 32],       # 注意：之前这一行漏掉了，可能是造成结果不好的原因
+        # anchor_base_sizes=[4, 8, 16, 32],       # 注意：之前这一行漏掉了，可能是造成结果不好的原因
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
         loss_cls=dict(
@@ -127,8 +127,8 @@ img_norm_cfg = dict(
 img_norm_cfg_t = dict(
     mean=[123.675, 123.675, 123.675], std=[58.395, 58.395, 58.395], to_rgb=False)
 data = dict(
-    imgs_per_gpu=4,         # 4 -> 2
-    workers_per_gpu=4,      # 4 -> 2
+    imgs_per_gpu=4,
+    workers_per_gpu=4,
     train=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations-pkl/train-all.pkl',
@@ -180,7 +180,7 @@ checkpoint_config = dict(interval=1)
 
 # yapf:disable
 log_config = dict(
-    interval=500,
+    interval=200,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -188,11 +188,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 25
+total_epochs = 20
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist_2'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/mul_libra_faster_rcnn_r50_pre_fpn_add_kaist_2'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/Expirement2/Group1/r50_pre_add_9920_kaist2_2'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/Expirement2/Group1/r50_pre_add_9920_kaist2_2'
 load_from = None
-resume_from = None
+resume_from = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/Expirement2/Group1/r50_pre_add_9920_kaist2_2/latest.pth'
 workflow = [('train', 1)]
