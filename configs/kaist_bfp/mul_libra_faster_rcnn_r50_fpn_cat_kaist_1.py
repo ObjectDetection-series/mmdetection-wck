@@ -29,7 +29,7 @@ model = dict(
         anchor_scales=[8, 10, 12, 14],
         anchor_ratios=[2.0, 1.0],
         anchor_strides=[4, 8, 16, 32],
-        anchor_base_sizes=[4, 8, 16, 32],
+        # anchor_base_sizes=[4, 8, 16, 32],
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
         loss_cls=dict(
@@ -188,11 +188,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 30
+total_epochs = 25
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/r50_bfp_cat_1'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/r50_bfp_cat_1'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/Expirement2/Group2/r50_cat_9920'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/Expirement2/Group2/r50_cat_992'
 load_from = None
-resume_from = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/r50_bfp_cat_1/latest.pth'
+resume_from = None
 workflow = [('train', 1)]

@@ -37,8 +37,8 @@ def main():
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_2.py',      # [0.1, 40]
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_3.py',    # [0.05, 100]
             # '../../configs/kaist_bfp/mul_libra_faster_rcnn_r50_fpn_add_kaist_4.py'   # [0.05, 100]
-            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py',
-            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'
+            '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_cat_kaist.py',
+            # '../../configs/kaist_bfp/mul_libra_faster_rcnn_v16_fpn_add_kaist.py'
         ]
 
     for config in configs:

@@ -30,7 +30,7 @@ model = dict(
         anchor_ratios=[1 / 0.5, 1],
         anchor_scales=[8, 10, 12, 14],
         anchor_strides=[4, 8, 16, 32],
-        anchor_base_sizes=[4, 8, 16, 32],
+        # anchor_base_sizes=[4, 8, 16, 32],
         target_means=[.0, .0, .0, .0],
         target_stds=[1.0, 1.0, 1.0, 1.0],
         loss_cls=dict(
@@ -115,9 +115,7 @@ test_cfg = dict(
         nms_thr=0.7,
         min_bbox_size=0),
     rcnn=dict(
-        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))    # YY
-    # rcnn=dict(
-    #     score_thr=0.05, nms=dict(type='nms', iou_thr=0.5), max_per_img=100))    # Libra
+        score_thr=0.1, nms=dict(type='nms', iou_thr=0.5), max_per_img=40))
 
 # dataset settings
 dataset_type = 'KaistDataset'
@@ -189,11 +187,11 @@ log_config = dict(
 # yapf:enable
 
 # runtime settings
-total_epochs = 10
+total_epochs = 20
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/Expirement2/v16_bfp_cat_saliencyMap_16960_2'
-# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/Expirement2/v16_bfp_cat__saliencyMap_16960_2'
+work_dir = '/media/ser248/3rd/WangCK/Data/work_dirs/KAIST/Expirement2/Group2/v16_cat_9920_3'
+# work_dir = '/home/wangck/WangCK/Data/work_dirs/KAIST/Expirement2/Group2/v16_cat_9920_3'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
